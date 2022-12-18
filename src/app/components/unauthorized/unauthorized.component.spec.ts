@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EventOfTodayComponent } from './event-of-today.component';
+import { UnauthorizedComponent } from './unauthorized.component';
 
-describe('EventOfTodayComponent', () => {
-  let component: EventOfTodayComponent;
-  let fixture: ComponentFixture<EventOfTodayComponent>;
+describe('UnauthorizedComponent', () => {
+  let component: UnauthorizedComponent;
+  let fixture: ComponentFixture<UnauthorizedComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EventOfTodayComponent ]
+      declarations: [ UnauthorizedComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(EventOfTodayComponent);
+    fixture = TestBed.createComponent(UnauthorizedComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

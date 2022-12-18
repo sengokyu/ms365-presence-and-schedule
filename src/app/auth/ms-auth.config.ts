@@ -1,12 +1,12 @@
 import { OpenIdConfiguration } from 'angular-auth-oidc-client';
 
-export const msGraphConfig: OpenIdConfiguration = {
+export const msAuthConfig: OpenIdConfiguration = {
   authority: `https://login.microsoftonline.com/${TENANT_ID}/v2.0/`,
   authWellknownEndpointUrl: `https://login.microsoftonline.com/${TENANT_ID}/v2.0/`,
   redirectUrl: window.location.origin,
   postLogoutRedirectUri: window.location.origin,
   clientId: CLIENT_ID,
-  scope: 'openid email profile https://graph.microsoft.com/.default',
+  scope: 'openid email profile .default',
   responseType: 'code',
   silentRenew: true,
   useRefreshToken: true,

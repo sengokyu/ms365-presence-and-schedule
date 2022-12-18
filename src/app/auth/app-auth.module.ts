@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { AuthModule } from 'angular-auth-oidc-client';
-import { msGraphConfig } from './ms-graph.config';
+import { msAuthConfig } from './ms-auth.config';
 
 @NgModule({
   imports: [
     AuthModule.forRoot({
-      config: msGraphConfig,
+      config: msAuthConfig,
     }),
   ],
   exports: [AuthModule],

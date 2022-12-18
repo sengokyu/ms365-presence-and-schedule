@@ -1,0 +1,8 @@
+<ng-container *ngIf="followings$ | async as followings">
+  <div *ngIf="followings.length === 0">
+    <p>フォロー中のユーザはありません。</p>
+    <button mat-button color="primary" routerLink="/user-list">フォローするユーザを追加する。</button>
+  </div>
+
+  <app-presence *ngFor="let following of followings" [user]="following"></app-presence>
+</ng-container>

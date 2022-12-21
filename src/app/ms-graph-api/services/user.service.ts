@@ -1,34 +1,23 @@
-import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ODataClient, ODataEntitySetService } from 'angular-odata';
-import { User } from 'microsoft-graph';
-import { map, Observable } from 'rxjs';
+import { ODataClient } from 'angular-odata';
+import { catchError, Observable, of } from 'rxjs';
 
-const SELECT_FIELDS = ['id', 'displayName', 'department', 'email']; // 取得項目
+const PHOTO_SIZE = '48x48'; // image size
 
 @Injectable()
-export class UserService extends ODataEntitySetService<User> {
-  private users?: Observable<Array<User>>;
+export class UserService {
+  constructor(private client: ODataClient) {}
 
-  constructor(client: ODataClient) {
-    super(client, 'users', 'microsoft.graph.user');
-  }
+  // プロファイル写真を取得
+  // 404のときはnull
+  public getProfilePhoto(userId: string): Observable<Blob | null> {
+    const path = `users/${userId}/photos/${PHOTO_SIZE}/$value`;
+    const resource = this.client.singleton(path);
 
-  get users$(): Observable<Array<User>> {
-    if (this.users === undefined) {
-      this.load();
-    }
-
-    return this.users!;
-  }
-
-  private load(): void {
-    const headers = new HttpHeaders({ ConsistencyLevel: 'eventual' });
-
-    this.users = this.entities()
-      .query((q) => q.filter("userType ne 'Guest'"))
-      .query((q) => q.select(SELECT_FIELDS))
-      .fetchAll({ headers, withCount: true })
-      .pipe(map(({ entities }) => entities));
+    return this.client.get(resource, { responseType: 'blob' }).pipe(
+      catchError((err) => {
+        return of(null) as Observable<Blob | null>;
+      })
+    );
   }
 }

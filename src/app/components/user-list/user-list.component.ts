@@ -8,7 +8,7 @@ import {
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { map, Subscription } from 'rxjs';
-import { UserService } from '../../ms-graph-api';
+import { UsersService } from '../../ms-graph-api';
 import { FollowingService } from '../../services/following.service';
 import { transformUser } from '../../transforms/transform-user';
 import { UserModel } from '../../models/user.model';
@@ -27,13 +27,13 @@ export class UserListComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
-    private userService: UserService,
+    private usersService: UsersService,
     private followingService: FollowingService
   ) {}
 
   ngOnInit(): void {
     this.subscription.add(
-      this.userService.users$.pipe(map(transformUser)).subscribe((x) => {
+      this.usersService.users$.pipe(map(transformUser)).subscribe((x) => {
         this.dataSource.data = x;
       })
     );

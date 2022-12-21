@@ -1,0 +1,6 @@
+<ng-container *ngIf="imgSrc$ | async as imgSrc; else textFace">
+  <img [src]="imgSrc.safeUrl" (load)="revokeObjectURL(imgSrc.objectUrl)" class="avatar">
+</ng-container>
+<ng-template #textFace>
+  <div class="text-face avatar" [style]="textStyle" >{{displayName}}</div>
+</ng-template>

@@ -25,6 +25,8 @@ import { PresenceComponent } from './components/presence/presence.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { MsGraphApiModule } from './ms-graph-api';
+import { AvatarComponent } from './components/avatar/avatar.component';
+import { ScheduleComponent } from './components/schedule/schedule.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,8 @@ import { MsGraphApiModule } from './ms-graph-api';
     PresenceComponent,
     UserListComponent,
     UnauthorizedComponent,
+    AvatarComponent,
+    ScheduleComponent,
   ],
   imports: [
     BrowserModule,

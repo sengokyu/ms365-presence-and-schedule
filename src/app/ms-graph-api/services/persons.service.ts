@@ -14,7 +14,7 @@ const SELECT_FIELDS = [
 
 // ひと/リソース一覧読み込み
 @Injectable()
-export class PersonService extends ODataEntitySetService<Person> {
+export class PersonsService extends ODataEntitySetService<Person> {
   private persons?: Observable<Array<Person>>;
 
   get persons$(): Observable<Array<Person>> {

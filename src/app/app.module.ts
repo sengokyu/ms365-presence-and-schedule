@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -19,14 +20,14 @@ import { AccessTokenInterceptor } from './access-token.interceptor';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppAuthModule } from './auth/app-auth.module';
+import { AvatarComponent } from './components/avatar/avatar.component';
 import { FollowingListComponent } from './components/following-list/following-list.component';
 import { HomeComponent } from './components/home/home.component';
 import { PresenceComponent } from './components/presence/presence.component';
+import { ScheduleComponent } from './components/schedule/schedule.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { MsGraphApiModule } from './ms-graph-api';
-import { AvatarComponent } from './components/avatar/avatar.component';
-import { ScheduleComponent } from './components/schedule/schedule.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { ScheduleComponent } from './components/schedule/schedule.component';
     MatIconModule,
     MatInputModule,
     MatMenuModule,
+    MatProgressBarModule,
     MatRippleModule,
     MatSortModule,
     MatTableModule,

@@ -1,8 +1,21 @@
 import { Injectable } from '@angular/core';
 import { ODataClient } from 'angular-odata';
-import { catchError, Observable, of } from 'rxjs';
+import { NullableOption, Presence } from 'microsoft-graph';
+import { catchError, map, Observable, of } from 'rxjs';
 
 const PHOTO_SIZE = '48x48'; // image size
+
+export type Availability = NullableOption<
+  | 'Available'
+  | 'AvailableIdle'
+  | 'Away'
+  | 'BeRightBack'
+  | 'Busy'
+  | 'BusyIdle'
+  | 'DoNotDisturb'
+  | 'Offline'
+  | 'PresenceUnknown'
+>;
 
 @Injectable()
 export class UserService {
@@ -19,5 +32,14 @@ export class UserService {
         return of(null) as Observable<Blob | null>;
       })
     );
+  }
+
+  public getAvailability(userId: string): Observable<Availability> {
+    const path = `users/${userId}/presence`;
+
+    return this.client
+      .singleton<Presence>(path)
+      .fetchEntity()
+      .pipe(map((x) => x?.availability as Availability));
   }
 }

@@ -7,11 +7,10 @@ import {
 } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { map, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { UsersService } from '../../ms-graph-api';
+import { UserEntity } from '../../ms-graph-api/entities/user.entity';
 import { FollowingService } from '../../services/following.service';
-import { transformUser } from '../../transforms/transform-user';
-import { UserModel } from '../../models/user.model';
 
 @Component({
   selector: 'app-user-list',
@@ -22,7 +21,7 @@ export class UserListComponent implements OnInit, OnDestroy, AfterViewInit {
   private readonly subscription = new Subscription();
 
   readonly displayColumns = ['_dummy', 'displayName', 'department']; // 表示対象列
-  readonly dataSource = new MatTableDataSource<UserModel>();
+  readonly dataSource = new MatTableDataSource<UserEntity>();
 
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -33,7 +32,7 @@ export class UserListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.subscription.add(
-      this.usersService.users$.pipe(map(transformUser)).subscribe((x) => {
+      this.usersService.getUsers().subscribe((x) => {
         this.dataSource.data = x;
       })
     );
@@ -47,7 +46,7 @@ export class UserListComponent implements OnInit, OnDestroy, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
-  onRowClick(row: UserModel): void {
+  onRowClick(row: UserEntity): void {
     this.followingService.addFollowing(row);
   }
 }

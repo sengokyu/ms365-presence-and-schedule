@@ -1,4 +1,4 @@
-export interface UserModel {
+export interface UserEntity {
   get id(): string;
   get displayName(): string;
   get department(): string;

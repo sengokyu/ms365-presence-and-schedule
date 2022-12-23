@@ -1,21 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ODataClient } from 'angular-odata';
-import { NullableOption, Presence } from 'microsoft-graph';
+import { Presence, ScheduleInformation } from 'microsoft-graph';
 import { catchError, map, Observable, of } from 'rxjs';
+import { AvailabilityEntity } from '../entities/availability.entity';
 
 const PHOTO_SIZE = '48x48'; // image size
-
-export type Availability = NullableOption<
-  | 'Available'
-  | 'AvailableIdle'
-  | 'Away'
-  | 'BeRightBack'
-  | 'Busy'
-  | 'BusyIdle'
-  | 'DoNotDisturb'
-  | 'Offline'
-  | 'PresenceUnknown'
->;
+const TIME_ZONE = 'Tokyo Standard Time';
 
 @Injectable()
 export class UserService {
@@ -34,12 +24,46 @@ export class UserService {
     );
   }
 
-  public getAvailability(userId: string): Observable<Availability> {
+  public getAvailability(userId: string): Observable<AvailabilityEntity> {
     const path = `users/${userId}/presence`;
 
     return this.client
       .singleton<Presence>(path)
       .fetchEntity()
-      .pipe(map((x) => x?.availability as Availability));
+      .pipe(map((x) => x?.availability as AvailabilityEntity));
+  }
+
+  // スケジュールを取得
+  public getSchedule(
+    schedules: Array<string>,
+    startDate: Date
+  ): Observable<Array<ScheduleInformation> | null> {
+    const path = 'me/calendar/getSchedule';
+    const param = {
+      schedules,
+      startTime: {
+        dateTime: startDate.toISOString(),
+        timeZone: TIME_ZONE,
+      },
+      endTime: {
+        dateTime: this.endDateTime(startDate).toISOString(),
+        timeZone: TIME_ZONE,
+      },
+    };
+
+    return this.client
+      .action<any, ScheduleInformation>(path)
+      .callEntities(param);
+  }
+
+  private endDateTime(start: Date): Date {
+    return new Date(
+      start.getFullYear(),
+      start.getMonth(),
+      start.getDate(),
+      23,
+      59,
+      59
+    );
   }
 }

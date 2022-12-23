@@ -3,32 +3,30 @@ import { Injectable } from '@angular/core';
 import { ODataClient, ODataEntitySetService } from 'angular-odata';
 import { User } from 'microsoft-graph';
 import { map, Observable } from 'rxjs';
+import { UserEntity } from '../entities/user.entity';
 
 const SELECT_FIELDS = ['id', 'displayName', 'department', 'email']; // 取得項目
 
+const transform = (src: User): UserEntity => ({
+  id: src.id!,
+  displayName: src.displayName!,
+  department: src.department!,
+  userPrincipalName: src.userPrincipalName!,
+});
+
 @Injectable()
 export class UsersService extends ODataEntitySetService<User> {
-  private users?: Observable<Array<User>>;
-
   constructor(client: ODataClient) {
     super(client, 'users', 'microsoft.graph.user');
   }
 
-  get users$(): Observable<Array<User>> {
-    if (this.users === undefined) {
-      this.load();
-    }
-
-    return this.users!;
-  }
-
-  private load(): void {
+  public getUsers(): Observable<Array<UserEntity>> {
     const headers = new HttpHeaders({ ConsistencyLevel: 'eventual' });
 
-    this.users = this.entities()
+    return this.entities()
       .query((q) => q.filter("userType ne 'Guest'"))
       .query((q) => q.select(SELECT_FIELDS))
       .fetchAll({ headers, withCount: true })
-      .pipe(map(({ entities }) => entities));
+      .pipe(map(({ entities }) => entities.map(transform)));
   }
 }

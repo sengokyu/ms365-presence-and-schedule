@@ -1,7 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UserModel } from '../../models/user.model';
-import { Availability, UserService } from '../../ms-graph-api';
 import { Observable } from 'rxjs';
+import {
+  AvailabilityEntity,
+  UserEntity,
+  UserService,
+} from '../../ms-graph-api';
 
 @Component({
   selector: 'app-presence',
@@ -10,9 +13,9 @@ import { Observable } from 'rxjs';
 })
 export class PresenceComponent implements OnInit {
   @Input()
-  user!: UserModel;
+  user!: UserEntity;
 
-  availability$?: Observable<Availability>;
+  availability$?: Observable<AvailabilityEntity>;
 
   constructor(private userService: UserService) {}
 

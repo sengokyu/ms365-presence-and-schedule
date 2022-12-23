@@ -1,3 +1,15 @@
 .user-card {
   margin: 16px;
+  padding: 8px;
+  display: flex;
+
+  .avatar {
+    margin: 0 8px;
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+
+  .name {
+    flex: 0 0 200px;
+  }
 }

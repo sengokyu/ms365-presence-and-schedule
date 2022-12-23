@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LocalStorageService } from '@practical-angular/local-storage';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { UserModel } from '../models/user.model';
+import { UserEntity } from '../ms-graph-api/entities/user.entity';
 
 const STORAGE_KEY = 'followings';
 
@@ -10,9 +10,9 @@ const STORAGE_KEY = 'followings';
   providedIn: 'root',
 })
 export class FollowingService {
-  private readonly _followings = new BehaviorSubject<Array<UserModel>>([]);
+  private readonly _followings = new BehaviorSubject<Array<UserEntity>>([]);
 
-  public get followings$(): Observable<Array<UserModel>> {
+  public get followings$(): Observable<Array<UserEntity>> {
     return this._followings.asObservable();
   }
 
@@ -20,7 +20,7 @@ export class FollowingService {
     this._followings.next(this.getFollowings());
   }
 
-  public addFollowing(user: UserModel): void {
+  public addFollowing(user: UserEntity): void {
     if (!this.isFollowingExists(user)) {
       const followings = this.getFollowings();
       followings.push(user);
@@ -28,22 +28,22 @@ export class FollowingService {
     }
   }
 
-  public removeFollowing(user: UserModel): void {}
+  public removeFollowing(user: UserEntity): void {}
 
-  private getFollowings(): Array<UserModel> {
+  private getFollowings(): Array<UserEntity> {
     return this.localStorageService.getItem(STORAGE_KEY, []) ?? [];
   }
 
-  private isFollowingExists(user: UserModel): boolean {
+  private isFollowingExists(user: UserEntity): boolean {
     return 0 <= this.findFollowing(user);
   }
 
-  private findFollowing(user: UserModel): number {
+  private findFollowing(user: UserEntity): number {
     const followings = this.getFollowings();
     return followings.findIndex((x) => x.id === user.id);
   }
 
-  private setFollowings(value: Array<UserModel>): void {
+  private setFollowings(value: Array<UserEntity>): void {
     this.localStorageService.setItem(STORAGE_KEY, value);
     this._followings.next(value);
   }

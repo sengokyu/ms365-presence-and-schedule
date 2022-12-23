@@ -1,17 +1,13 @@
-<mat-card class="user-card">
-  <mat-card-header>
-    <app-avatar [user]="user" mat-card-avatar></app-avatar>
-    <mat-card-title>{{user.displayName}}</mat-card-title>
-    <mat-card-subtitle>
-      <ng-container *ngIf="availability$ | async as availability">
-        {{availability}}
-      </ng-container>
-    </mat-card-subtitle>
-  </mat-card-header>
-  <mat-card-content>
-    hoge hoge hoge<br>
-  </mat-card-content>
-</mat-card>
+<div class="mat-mdc-card user-card">
+  <app-avatar [user]="user" mat-card-avatar class="avatar"></app-avatar>
+  <div class="name">
+    <div>{{user.displayName}}</div>
+    <div *ngIf="availability$ | async as availability">
+      {{availability}}
+    </div>
+  </div>
+</div>
+
 
 <ng-template #loading>
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>

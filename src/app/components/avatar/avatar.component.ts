@@ -2,8 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { map, Observable } from 'rxjs';
 import { text2Color } from 'src/app/utils/text2color';
-import { UserModel } from '../../models/user.model';
-import { UserService } from '../../ms-graph-api';
+import { UserEntity, UserService } from '../../ms-graph-api';
 
 @Component({
   selector: 'app-avatar',
@@ -12,7 +11,7 @@ import { UserService } from '../../ms-graph-api';
 })
 export class AvatarComponent implements OnInit {
   @Input()
-  user!: UserModel;
+  user!: UserEntity;
 
   // revokeObjectURLへ渡すため、オリジナルのobjectURLも持っていく
   imgSrc$?: Observable<{ safeUrl: SafeUrl; objectUrl: string } | null>;

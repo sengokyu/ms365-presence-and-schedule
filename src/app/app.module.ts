@@ -28,6 +28,7 @@ import { ScheduleComponent } from './components/schedule/schedule.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { MsGraphApiModule } from './ms-graph-api';
+import { StatusMessagePipe } from './pipes/status-message.pipe';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { MsGraphApiModule } from './ms-graph-api';
     UnauthorizedComponent,
     AvatarComponent,
     ScheduleComponent,
+    StatusMessagePipe,
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FollowingService } from '../../services/following.service';
+import { DateService } from '../../services/date.service';
 
 @Component({
   selector: 'app-following-list',
@@ -12,5 +13,10 @@ export class FollowingListComponent {
 
   readonly followings$ = this.followingService.followings$;
 
-  constructor(private followingService: FollowingService) {}
+  readonly targetDate = this.dateService.businessTime;
+
+  constructor(
+    private followingService: FollowingService,
+    private dateService: DateService
+  ) {}
 }

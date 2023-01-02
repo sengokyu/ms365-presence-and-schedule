@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ODataClient } from 'angular-odata';
-import { Presence, ScheduleInformation } from 'microsoft-graph';
+import { Presence, ScheduleInformation, ScheduleItem } from 'microsoft-graph';
 import { catchError, map, Observable, of } from 'rxjs';
-import { AvailabilityEntity } from '../entities/availability.entity';
-
-const PHOTO_SIZE = '48x48'; // image size
-const TIME_ZONE = 'Tokyo Standard Time';
+import { PresenceEntity } from '../entities/presence.entity';
+import { PHOTO_SIZE, PREFERRED_TIME_ZONE } from '../ms-graph-api.config';
+import { ScheduleItemEntity } from '../entities/schedule-item.entity';
 
 @Injectable()
 export class UserService {
@@ -24,36 +23,43 @@ export class UserService {
     );
   }
 
-  public getAvailability(userId: string): Observable<AvailabilityEntity> {
+  // プレゼンス&ステータスメッセージを取得
+  public getPresence(userId: string): Observable<PresenceEntity> {
     const path = `users/${userId}/presence`;
 
     return this.client
-      .singleton<Presence>(path)
-      .fetchEntity()
-      .pipe(map((x) => x?.availability as AvailabilityEntity));
+      .singleton<Presence>(path, 'beta')
+      .fetchEntity() as Observable<PresenceEntity>;
   }
 
   // スケジュールを取得
-  public getSchedule(
-    schedules: Array<string>,
+  public getScheduleItems(
+    mail: string,
     startDate: Date
-  ): Observable<Array<ScheduleInformation> | null> {
+  ): Observable<ScheduleItemEntity[] | null | undefined> {
     const path = 'me/calendar/getSchedule';
     const param = {
-      schedules,
+      schedules: [mail],
       startTime: {
         dateTime: startDate.toISOString(),
-        timeZone: TIME_ZONE,
+        timeZone: PREFERRED_TIME_ZONE,
       },
       endTime: {
         dateTime: this.endDateTime(startDate).toISOString(),
-        timeZone: TIME_ZONE,
+        timeZone: PREFERRED_TIME_ZONE,
       },
     };
 
     return this.client
       .action<any, ScheduleInformation>(path)
-      .callEntities(param);
+      .callEntities(param, {
+        headers: { Prefer: `outlook.timezone="${PREFERRED_TIME_ZONE}"` },
+      })
+      .pipe(
+        map((x) =>
+          x ? x[0].scheduleItems?.map(this.transformScheduleItem) : null
+        )
+      );
   }
 
   private endDateTime(start: Date): Date {
@@ -65,5 +71,16 @@ export class UserService {
       59,
       59
     );
+  }
+
+  private transformScheduleItem(src: ScheduleItem): ScheduleItemEntity {
+    const dst = src as ScheduleItemEntity;
+    dst.startDateTime = src.start?.dateTime
+      ? new Date(src.start?.dateTime)
+      : undefined;
+    dst.endDateTime = src.end?.dateTime
+      ? new Date(src.end?.dateTime)
+      : undefined;
+    return dst;
   }
 }

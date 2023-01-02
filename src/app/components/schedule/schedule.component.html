@@ -1,1 +1,19 @@
-<p>schedule works!</p>
+<ng-container *ngIf="scheduleItems$|async as scheduleItems">
+  <svg [attr.viewBox]="calcViewBox(scheduleItems.length)">
+    <g *ngFor="let hour of hours; let i=index" class="hour-bar">
+      <rect [attr.x]="(32*i)+'px'" y="0" width="24px" height="100%" rx="12px" ry="12px" />
+      <text [attr.x]="(32*i+12)+'px'" y="18px" text-anchor="middle" class="hour-text">{{hour}}</text>
+    </g>
+
+    <ng-container *ngFor="let scheduleItem of scheduleItems; let i=index">
+      <g class="schedule-item" [attr.transform]="calcTransform(scheduleItem, i)">
+        <rect x="0" y="0" [attr.width]="calcWidth(scheduleItem)" height="20px" rx="4px" ry="4px"></rect>
+        <text x="4px" y="16px" class="schedule-subject">
+          {{scheduleItem.start?.dateTime|date:"H:mm":"+0900"}}
+          -
+          {{scheduleItem.end?.dateTime|date:"H:mm":"+0900"}}
+          {{scheduleItem.subject}}</text>
+      </g>
+    </ng-container>
+  </svg>
+</ng-container>

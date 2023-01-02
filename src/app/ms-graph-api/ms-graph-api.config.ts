@@ -12,3 +12,6 @@ export const msGraphApiConfig: ApiConfig[] = [
     serviceRootUrl: 'https://graph.microsoft.com/beta',
   },
 ];
+
+export const PHOTO_SIZE = '48x48'; // image size
+export const PREFERRED_TIME_ZONE = 'Tokyo Standard Time';

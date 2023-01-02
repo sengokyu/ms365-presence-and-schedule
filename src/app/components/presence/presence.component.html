@@ -1,14 +1,28 @@
-<div class="mat-mdc-card user-card">
-  <app-avatar [user]="user" mat-card-avatar class="avatar"></app-avatar>
-  <div class="name">
-    <div>{{user.displayName}}</div>
-    <div *ngIf="availability$ | async as availability">
-      {{availability}}
+<mat-card *ngIf="presence$ | async as presence; else loading">
+  <mat-card-content class="card-content">
+    <app-avatar [user]="user" class="avatar"></app-avatar>
+    <div class="name">
+      <div>{{user.displayName}}</div>
+      <div>
+        {{presence.availability}}
+      </div>
     </div>
-  </div>
-</div>
-
+    <div class="status-message">
+      {{presence | statusMessage}}
+    </div>
+    <app-schedule [user]="user" [targetDate]="targetDate" class="schedule"></app-schedule>
+  </mat-card-content>
+</mat-card>
 
 <ng-template #loading>
-  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  <mat-card>
+    <mat-card-header>
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="name">
+        <div>{{user.displayName}}</div>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </ng-template>

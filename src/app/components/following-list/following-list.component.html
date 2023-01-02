@@ -4,5 +4,5 @@
     <button mat-button color="primary" routerLink="/user-list">フォローするユーザを追加する。</button>
   </div>
 
-  <app-presence *ngFor="let following of followings" [user]="following"></app-presence>
+  <app-presence *ngFor="let following of followings" [user]="following" [targetDate]="targetDate"></app-presence>
 </ng-container>

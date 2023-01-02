@@ -5,12 +5,19 @@ import { User } from 'microsoft-graph';
 import { map, Observable } from 'rxjs';
 import { UserEntity } from '../entities/user.entity';
 
-const SELECT_FIELDS = ['id', 'displayName', 'department', 'email']; // 取得項目
+const SELECT_FIELDS = [
+  'id',
+  'displayName',
+  'department',
+  'mail',
+  'userPrincipalName',
+]; // 取得項目
 
 const transform = (src: User): UserEntity => ({
   id: src.id!,
   displayName: src.displayName!,
   department: src.department!,
+  mail: src.mail!,
   userPrincipalName: src.userPrincipalName!,
 });
 

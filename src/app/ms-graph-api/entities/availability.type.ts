@@ -1,4 +1,4 @@
-export type AvailabilityEntity =
+export type AvailabilityType =
   | 'Available'
   | 'AvailableIdle'
   | 'Away'

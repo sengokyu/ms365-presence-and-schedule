@@ -5,6 +5,7 @@ import { catchError, map, Observable, of } from 'rxjs';
 import { PresenceEntity } from '../entities/presence.entity';
 import { PHOTO_SIZE, PREFERRED_TIME_ZONE } from '../ms-graph-api.config';
 import { ScheduleItemEntity } from '../entities/schedule-item.entity';
+import { newDateTime } from '../../utils/date-utils';
 
 @Injectable()
 export class UserService {
@@ -42,16 +43,17 @@ export class UserService {
       schedules: [mail],
       startTime: {
         dateTime: startDate.toISOString(),
-        timeZone: PREFERRED_TIME_ZONE,
+        timeZone: 'UTC',
       },
       endTime: {
-        dateTime: this.endDateTime(startDate).toISOString(),
-        timeZone: PREFERRED_TIME_ZONE,
+        dateTime: newDateTime(startDate, 23, 59, 59).toISOString(),
+        timeZone: 'UTC',
       },
     };
 
     return this.client
       .action<any, ScheduleInformation>(path)
+      // .query((q) => q.select(['scheduleItems'])) // 使えないらしい
       .callEntities(param, {
         headers: { Prefer: `outlook.timezone="${PREFERRED_TIME_ZONE}"` },
       })
@@ -62,25 +64,13 @@ export class UserService {
       );
   }
 
-  private endDateTime(start: Date): Date {
-    return new Date(
-      start.getFullYear(),
-      start.getMonth(),
-      start.getDate(),
-      23,
-      59,
-      59
-    );
-  }
-
   private transformScheduleItem(src: ScheduleItem): ScheduleItemEntity {
-    const dst = src as ScheduleItemEntity;
-    dst.startDateTime = src.start?.dateTime
-      ? new Date(src.start?.dateTime)
-      : undefined;
-    dst.endDateTime = src.end?.dateTime
-      ? new Date(src.end?.dateTime)
-      : undefined;
-    return dst;
+    return {
+      ...src,
+      startDateTime: src.start?.dateTime
+        ? new Date(src.start?.dateTime)
+        : undefined,
+      endDateTime: src.end?.dateTime ? new Date(src.end?.dateTime) : undefined,
+    };
   }
 }

@@ -20,15 +20,16 @@ import { AccessTokenInterceptor } from './access-token.interceptor';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppAuthModule } from './auth/app-auth.module';
+import { AvailabilityComponent } from './components/availability/availability.component';
 import { AvatarComponent } from './components/avatar/avatar.component';
 import { FollowingListComponent } from './components/following-list/following-list.component';
 import { HomeComponent } from './components/home/home.component';
 import { PresenceComponent } from './components/presence/presence.component';
 import { ScheduleComponent } from './components/schedule/schedule.component';
+import { StatusMessageComponent } from './components/status-message/status-message.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { MsGraphApiModule } from './ms-graph-api';
-import { StatusMessagePipe } from './pipes/status-message.pipe';
 
 @NgModule({
   declarations: [
@@ -38,9 +39,10 @@ import { StatusMessagePipe } from './pipes/status-message.pipe';
     PresenceComponent,
     UserListComponent,
     UnauthorizedComponent,
+    AvailabilityComponent,
     AvatarComponent,
     ScheduleComponent,
-    StatusMessagePipe,
+    StatusMessageComponent,
   ],
   imports: [
     BrowserModule,

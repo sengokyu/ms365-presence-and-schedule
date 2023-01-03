@@ -13,7 +13,7 @@ export class FollowingListComponent {
 
   readonly followings$ = this.followingService.followings$;
 
-  readonly targetDate = this.dateService.businessTime;
+  readonly targetDate = this.dateService.today;
 
   constructor(
     private followingService: FollowingService,

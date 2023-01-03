@@ -3,13 +3,9 @@
     <app-avatar [user]="user" class="avatar"></app-avatar>
     <div class="name">
       <div>{{user.displayName}}</div>
-      <div>
-        {{presence.availability}}
-      </div>
+      <app-availability [presence]="presence"></app-availability>
     </div>
-    <div class="status-message">
-      {{presence | statusMessage}}
-    </div>
+    <app-status-message [presence]="presence" class="status-message"></app-status-message>
     <app-schedule [user]="user" [targetDate]="targetDate" class="schedule"></app-schedule>
   </mat-card-content>
 </mat-card>

@@ -1,3 +1,9 @@
+$barColor: #0078b4;
+
+.svg {
+  width: 100%;
+}
+
 .hours {
   display: flex;
 
@@ -28,12 +34,34 @@
 }
 
 .schedule-item {
-  fill: white;
-  fill-opacity: 75%;
-}
+  .free {
+    stroke: $barColor;
+    fill: none;
+  }
 
-.schedule-subject {
-  font-size: 14px;
-  font-weight: lighter;
-  stroke: #0f0f0f;
+  .busy {
+    stroke: $barColor;
+    fill: $barColor;
+  }
+
+  .workingElsewhere {
+    stroke: $barColor;
+    fill: url("#workingElsewhere");
+  }
+
+  .tentative {
+    stroke: $barColor;
+    fill: url("#tentative");
+  }
+
+  .oof {
+    stroke: none;
+    fill: url("#oof");
+  }
+
+  .subject {
+    font-size: 14px;
+    font-weight: lighter;
+    stroke: #0f0f0f;
+  }
 }

@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ScheduleItem } from 'microsoft-graph';
 import { Observable } from 'rxjs';
 import { A_HOUR_IN_MM } from 'src/app/utils/date-utils';
-import { BusinessTimeEntity } from '../../entities/business-time.entity';
 import {
   ScheduleItemEntity,
   UserEntity,
@@ -26,7 +25,7 @@ export class ScheduleComponent implements OnInit {
   user!: UserEntity;
 
   @Input()
-  targetDate!: BusinessTimeEntity;
+  targetDate!: Date;
 
   // 背景の列
   hours = [
@@ -61,16 +60,15 @@ export class ScheduleComponent implements OnInit {
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    console.log(this.targetDate);
     this.scheduleItems$ = this.userService.getScheduleItems(
       this.user.mail,
-      this.targetDate.midNight
+      this.targetDate
     );
   }
 
   calcViewBox(count: number): string {
     const width = WIDTH_OF_HOUR * 24;
-    const height = HEIGHT_OF_ITEM * count + MARGIN_OF_ITEMS * 2;
+    const height = HEIGHT_OF_ITEM * count + 36;
 
     return `0 0 ${width} ${height}`;
   }
@@ -86,8 +84,7 @@ export class ScheduleComponent implements OnInit {
   calcWidth(scheduleItem: ScheduleItemEntity): string {
     const endPos =
       Math.min(
-        (scheduleItem.endDateTime!.getTime() -
-          this.targetDate.midNight.getTime()) /
+        (scheduleItem.endDateTime!.getTime() - this.targetDate.getTime()) /
           A_HOUR_IN_MM,
         24
       ) - this.calcStartPos(scheduleItem);
@@ -98,8 +95,7 @@ export class ScheduleComponent implements OnInit {
   calcStartPos(scheduleItem: ScheduleItemEntity): number {
     return Math.max(
       0,
-      (scheduleItem.startDateTime!.getTime() -
-        this.targetDate.midNight.getTime()) /
+      (scheduleItem.startDateTime!.getTime() - this.targetDate.getTime()) /
         A_HOUR_IN_MM
     );
   }

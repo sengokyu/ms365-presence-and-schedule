@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PresenceEntity, UserEntity, UserService } from '../../ms-graph-api';
-import { BusinessTimeEntity } from '../../entities/business-time.entity';
 
 @Component({
   selector: 'app-presence',
@@ -13,7 +12,7 @@ export class PresenceComponent implements OnInit {
   user!: UserEntity;
 
   @Input()
-  targetDate!: BusinessTimeEntity;
+  targetDate!: Date;
 
   presence$?: Observable<PresenceEntity>;
 

@@ -1,0 +1,34 @@
+.with-icon {
+  line-height: 13px;
+  background-repeat: no-repeat;
+  padding-left: 16px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.Available {
+  background-image: url("/assets/presence_available.png");
+}
+.AvailableIdle {
+  background-image: url("/assets/presence_available.png");
+}
+.Away {
+  background-image: url("/assets/presence_away.png");
+}
+.BeRightBack {
+  background-image: url("/assets/presence_away.png");
+}
+.Busy {
+  background-image: url("/assets/presence_busy.png");
+}
+.BusyIdle {
+  background-image: url("/assets/presence_busy.png");
+}
+.DoNotDisturb {
+  background-image: url("/assets/presence_dnd.png");
+}
+.Offline {
+  background-image: url("/assets/presence_offline.png");
+}
+.PresenceUnknown {
+  background-image: url("/assets/presence_unknown.png");
+}

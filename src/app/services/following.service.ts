@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LocalStorageService } from '@practical-angular/local-storage';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { UserEntity } from '../ms-graph-api/entities/user.entity';
+import { UserEntity } from '../ms-graph-api';
 
 const STORAGE_KEY = 'followings';
 
@@ -17,21 +17,32 @@ export class FollowingService {
   }
 
   constructor(private localStorageService: LocalStorageService) {
-    this._followings.next(this.getFollowings());
+    this.loadFollowings();
   }
 
   public addFollowing(user: UserEntity): void {
     if (!this.isFollowingExists(user)) {
-      const followings = this.getFollowings();
+      const followings = this._followings.value;
       followings.push(user);
       this.setFollowings(followings);
     }
   }
 
-  public removeFollowing(user: UserEntity): void {}
+  public removeFollowing(user: UserEntity): void {
+    const index = this.findFollowing(user);
 
-  private getFollowings(): Array<UserEntity> {
-    return this.localStorageService.getItem(STORAGE_KEY, []) ?? [];
+    if (0 <= index) {
+      const followings = this._followings.getValue();
+      console.log(followings);
+      followings.splice(index, 1);
+      this.setFollowings(followings);
+    }
+  }
+
+  private loadFollowings(): void {
+    this._followings.next(
+      this.localStorageService.getItem(STORAGE_KEY, []) ?? []
+    );
   }
 
   private isFollowingExists(user: UserEntity): boolean {
@@ -39,8 +50,7 @@ export class FollowingService {
   }
 
   private findFollowing(user: UserEntity): number {
-    const followings = this.getFollowings();
-    return followings.findIndex((x) => x.id === user.id);
+    return this._followings.value.findIndex((x) => x.id === user.id);
   }
 
   private setFollowings(value: Array<UserEntity>): void {

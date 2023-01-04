@@ -7,6 +7,8 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
+  editMode = false;
+
   constructor(private oidcSecurityService: OidcSecurityService) {}
 
   logout(): void {

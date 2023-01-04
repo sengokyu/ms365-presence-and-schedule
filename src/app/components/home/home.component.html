@@ -4,25 +4,30 @@
     <span>&nbsp;&nbsp;</span>
     <span>行き先掲示板</span>
     <span class="flex-fill"></span>
-    <button mat-icon-button [matMenuTriggerFor]="menu">
-      <mat-icon>settings</mat-icon>
-    </button>
+    <ng-container *ngIf="!editMode;else inEditMode">
+      <button mat-icon-button (click)="editMode=true">
+        <mat-icon>mode_edit</mat-icon>
+      </button>
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>settings</mat-icon>
+      </button>
+    </ng-container>
   </mat-toolbar-row>
 </mat-toolbar>
 
-<app-following-list></app-following-list>
+<app-following-list [editMode]="editMode"></app-following-list>
 
 <mat-menu #menu="matMenu">
   <button mat-menu-item routerLink="/user-list">
     <mat-icon>person_add</mat-icon>
     <span>表示するメンバーを選択</span>
   </button>
-  <button mat-menu-item disabled>
-    <mat-icon>voicemail</mat-icon>
-    <span>Check voice mail</span>
-  </button>
   <button mat-menu-item (click)="logout()">
     <mat-icon>logout</mat-icon>
     <span>ログアウト</span>
   </button>
 </mat-menu>
+
+<ng-template #inEditMode>
+  <button mat-button color="primary" (click)="editMode=false">Done</button>
+</ng-template>

@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { FollowingService } from '../../services/following.service';
+import { Component, Input } from '@angular/core';
 import { DateService } from '../../services/date.service';
+import { FollowingService } from '../../services/following.service';
 
 @Component({
   selector: 'app-following-list',
@@ -8,8 +8,8 @@ import { DateService } from '../../services/date.service';
   styleUrls: ['./following-list.component.scss'],
 })
 export class FollowingListComponent {
-  @Output()
-  readonly add = new EventEmitter();
+  @Input()
+  editMode!: boolean;
 
   readonly followings$ = this.followingService.followings$;
 

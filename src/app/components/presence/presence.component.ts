@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PresenceEntity, UserEntity, UserService } from '../../ms-graph-api';
+import { FollowingService } from '../../services/following.service';
 
 @Component({
   selector: 'app-presence',
@@ -9,6 +10,9 @@ import { PresenceEntity, UserEntity, UserService } from '../../ms-graph-api';
 })
 export class PresenceComponent implements OnInit {
   @Input()
+  editMode!: boolean;
+
+  @Input()
   user!: UserEntity;
 
   @Input()
@@ -16,9 +20,16 @@ export class PresenceComponent implements OnInit {
 
   presence$?: Observable<PresenceEntity>;
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private followingService: FollowingService
+  ) {}
 
   ngOnInit(): void {
     this.presence$ = this.userService.getPresence(this.user.id);
+  }
+
+  remove(): void {
+    this.followingService.removeFollowing(this.user);
   }
 }

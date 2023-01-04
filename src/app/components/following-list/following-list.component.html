@@ -1,8 +1,13 @@
 <ng-container *ngIf="followings$ | async as followings">
-  <div *ngIf="followings.length === 0">
+  <div *ngIf="followings.length === 0" class="center">
     <p>フォロー中のユーザはありません。</p>
-    <button mat-button color="primary" routerLink="/user-list">フォローするユーザを追加する。</button>
+    <button mat-raised-button color="primary" routerLink="/user-list">フォローするユーザを追加する</button>
   </div>
 
-  <app-presence *ngFor="let following of followings" [user]="following" [targetDate]="targetDate"></app-presence>
+  <app-presence *ngFor="let following of followings" [user]="following" [targetDate]="targetDate"
+    [editMode]="editMode"></app-presence>
+
+  <div *ngIf="followings.length !== 0 && editMode" class="center">
+    <button mat-raised-button color="primary" routerLink="/user-list">フォローするユーザを追加する。</button>
+  </div>
 </ng-container>

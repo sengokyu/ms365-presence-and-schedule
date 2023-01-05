@@ -5,9 +5,10 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Subscription } from 'rxjs';
+import { debounceTime, Subscription } from 'rxjs';
 import { UsersService } from '../../ms-graph-api';
 import { UserEntity } from '../../ms-graph-api/entities/user.entity';
 import { FollowingService } from '../../services/following.service';
@@ -20,7 +21,8 @@ import { FollowingService } from '../../services/following.service';
 export class UserListComponent implements OnInit, OnDestroy, AfterViewInit {
   private readonly subscription = new Subscription();
 
-  readonly displayColumns = ['_dummy', 'displayName', 'department']; // 表示対象列
+  readonly needle = new FormControl('');
+  readonly displayColumns = ['_dummy', 'displayName', 'department', 'mail']; // 表示対象列
   readonly dataSource = new MatTableDataSource<UserEntity>();
 
   @ViewChild(MatSort) sort!: MatSort;
@@ -36,6 +38,13 @@ export class UserListComponent implements OnInit, OnDestroy, AfterViewInit {
         this.dataSource.data = x;
       })
     );
+
+    //  フィルタセット
+    this.subscription.add(
+      this.needle.valueChanges.pipe(debounceTime(100)).subscribe((needle) => {
+        this.setFilter(needle);
+      })
+    );
   }
 
   ngOnDestroy(): void {
@@ -48,5 +57,11 @@ export class UserListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onRowClick(row: UserEntity): void {
     this.followingService.addFollowing(row);
+  }
+
+  private setFilter(needle: string | null): void {
+    if (this.dataSource) {
+      this.dataSource.filter = needle?.trim() ?? '';
+    }
   }
 }

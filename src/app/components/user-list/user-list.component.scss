@@ -1,3 +1,24 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.toolbar {
+  flex: 0 0 auto;
+}
+
+.form-container {
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.table-container {
+  flex: 1 1 auto;
+  overflow: scroll;
+}
+
 .add-button {
   visibility: hidden;
 }

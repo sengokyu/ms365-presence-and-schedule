@@ -1,36 +1,29 @@
 import { Injectable } from '@angular/core';
 import { ODataClient } from 'angular-odata';
-import { Presence, ScheduleInformation, ScheduleItem } from 'microsoft-graph';
-import { catchError, map, Observable, of } from 'rxjs';
-import { PresenceEntity } from '../entities/presence.entity';
-import { PHOTO_SIZE, PREFERRED_TIME_ZONE } from '../ms-graph-api.config';
-import { ScheduleItemEntity } from '../entities/schedule-item.entity';
+import { ScheduleInformation, ScheduleItem } from 'microsoft-graph';
+import { map, Observable } from 'rxjs';
 import { newDateTime } from '../../utils/date-utils';
+import { PresenceEntity } from '../entities/presence.entity';
+import { ScheduleItemEntity } from '../entities/schedule-item.entity';
+import { StatusMessageEntity } from '../entities/status-message.entity';
+import { PREFERRED_TIME_ZONE } from '../ms-graph-api.config';
 
 @Injectable()
 export class UserService {
   constructor(private client: ODataClient) {}
 
-  // プロファイル写真を取得
-  // 404のときはnull
-  public getProfilePhoto(userId: string): Observable<Blob | null> {
-    const path = `users/${userId}/photos/${PHOTO_SIZE}/$value`;
-    const resource = this.client.singleton(path);
+  // プレゼンス&ステータスメッセージを取得
+  public getPresence(): Observable<PresenceEntity | null> {
+    const path = `me/presence`;
 
-    return this.client.get(resource, { responseType: 'blob' }).pipe(
-      catchError((err) => {
-        return of(null) as Observable<Blob | null>;
-      })
-    );
+    return this.client.singleton<PresenceEntity>(path, 'beta').fetchEntity();
   }
 
-  // プレゼンス&ステータスメッセージを取得
-  public getPresence(userId: string): Observable<PresenceEntity> {
-    const path = `users/${userId}/presence`;
+  public setStatusMessage(statusMessage: StatusMessageEntity): Observable<any> {
+    const path = 'me/presence/setStatusMessage';
+    const body = this.transformStatusMessage(statusMessage);
 
-    return this.client
-      .singleton<Presence>(path, 'beta')
-      .fetchEntity() as Observable<PresenceEntity>;
+    return this.client.action(path, 'beta').call(body);
   }
 
   // スケジュールを取得
@@ -39,7 +32,40 @@ export class UserService {
     startDate: Date
   ): Observable<ScheduleItemEntity[] | null | undefined> {
     const path = 'me/calendar/getSchedule';
-    const param = {
+    const param = this.createScheduleInfoParam(mail, startDate);
+
+    return (
+      this.client
+        .action<any, ScheduleInformation>(path)
+        // .query((q) => q.select(['scheduleItems'])) // 使えないらしい
+        .callEntities(param, {
+          headers: { Prefer: `outlook.timezone="${PREFERRED_TIME_ZONE}"` },
+        })
+        .pipe(
+          map((x) =>
+            x ? x[0].scheduleItems?.map(this.transformScheduleItem) : null
+          )
+        )
+    );
+  }
+
+  private transformStatusMessage(src: StatusMessageEntity): any {
+    const content =
+      src.message + (src.pinned ? '<pinnednote></pinnednote>' : '');
+    const expiryDateTime = src.expiryDate
+      ? { dateTime: src.expiryDate.toISOString(), timeZone: 'UTC' }
+      : null;
+
+    return {
+      statusMessage: {
+        message: { content, contentType: 'text' },
+        expiryDateTime,
+      },
+    };
+  }
+
+  private createScheduleInfoParam(mail: string, startDate: Date): any {
+    return {
       schedules: [mail],
       startTime: {
         dateTime: startDate.toISOString(),
@@ -50,18 +76,6 @@ export class UserService {
         timeZone: 'UTC',
       },
     };
-
-    return this.client
-      .action<any, ScheduleInformation>(path)
-      // .query((q) => q.select(['scheduleItems'])) // 使えないらしい
-      .callEntities(param, {
-        headers: { Prefer: `outlook.timezone="${PREFERRED_TIME_ZONE}"` },
-      })
-      .pipe(
-        map((x) =>
-          x ? x[0].scheduleItems?.map(this.transformScheduleItem) : null
-        )
-      );
   }
 
   private transformScheduleItem(src: ScheduleItem): ScheduleItemEntity {

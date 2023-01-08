@@ -1,26 +1,30 @@
-<mat-toolbar color="primary">
-  <mat-toolbar-row>
-    <mat-icon>transfer_within_a_station</mat-icon>
-    <span>&nbsp;&nbsp;</span>
-    <span>行き先掲示板</span>
-    <span class="flex-fill"></span>
-    <ng-container *ngIf="!editMode;else inEditMode">
-      <button mat-icon-button (click)="editMode=true">
-        <mat-icon>mode_edit</mat-icon>
-      </button>
-      <button mat-icon-button [matMenuTriggerFor]="menu">
-        <mat-icon>settings</mat-icon>
-      </button>
-    </ng-container>
-  </mat-toolbar-row>
-</mat-toolbar>
+<div class="container">
+  <mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <mat-icon>transfer_within_a_station</mat-icon>
+      <span>&nbsp;&nbsp;</span>
+      <span>行き先掲示板</span>
+      <span class="flex-fill"></span>
+      <ng-container *ngIf="!editMode;else inEditMode">
+        <button mat-icon-button (click)="editMode=true">
+          <mat-icon svgIcon="people_delete_add"></mat-icon>
+        </button>
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>settings</mat-icon>
+        </button>
+      </ng-container>
+    </mat-toolbar-row>
+  </mat-toolbar>
 
-<app-following-list [editMode]="editMode"></app-following-list>
+  <app-following-list [editMode]="editMode"></app-following-list>
+
+  <app-status-message-bar></app-status-message-bar>
+</div>
 
 <mat-menu #menu="matMenu">
   <button mat-menu-item routerLink="/user-list">
     <mat-icon>person_add</mat-icon>
-    <span>表示するメンバーを選択</span>
+    <span>フォローするメンバーを選択</span>
   </button>
   <button mat-menu-item (click)="logout()">
     <mat-icon>logout</mat-icon>

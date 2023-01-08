@@ -1,0 +1,21 @@
+<form [formGroup]="form" class="flex-column" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="fill">
+    <mat-label>ステータスメッセージ</mat-label>
+    <textarea formControlName="message" required matInput cdkTextareaAutosize cdkAutosizeMinRows="3"></textarea>
+  </mat-form-field>
+
+  <mat-checkbox formControlName="pinned">他のユーザーが自分にメッセージを送るときに表示する</mat-checkbox>
+
+  <mat-form-field appearance="fill">
+    <mat-label>有効期間</mat-label>
+    <mat-select formControlName="expiryDate">
+      <mat-option>なし</mat-option>
+      <mat-option>1時間</mat-option>
+      <mat-option>4時間</mat-option>
+      <mat-option>今日</mat-option>
+      <mat-option>今週</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button type="submit" mat-flat-button color="primary" [disabled]="form.invalid">保存</button>
+</form>

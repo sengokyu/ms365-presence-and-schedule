@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { map, Observable } from 'rxjs';
 import { text2Color } from 'src/app/utils/text2color';
-import { UserEntity, UserService } from '../../ms-graph-api';
+import { UserEntity, UsersService } from '../../ms-graph-api';
 
 @Component({
   selector: 'app-avatar',
@@ -17,7 +17,7 @@ export class AvatarComponent implements OnInit {
   imgSrc$?: Observable<{ safeUrl: SafeUrl; objectUrl: string } | null>;
 
   constructor(
-    private userService: UserService,
+    private usersService: UsersService,
     private sanitizer: DomSanitizer
   ) {}
 
@@ -34,7 +34,7 @@ export class AvatarComponent implements OnInit {
 
   ngOnInit(): void {
     // 画像があれば画像を表示、なければ名前を表示
-    this.imgSrc$ = this.userService.getProfilePhoto(this.user.id).pipe(
+    this.imgSrc$ = this.usersService.getProfilePhoto(this.user.id).pipe(
       map((x) => {
         if (x === null) {
           return null;

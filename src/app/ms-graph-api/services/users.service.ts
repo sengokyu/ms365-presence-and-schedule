@@ -2,8 +2,10 @@ import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ODataClient, ODataEntitySetService } from 'angular-odata';
 import { User } from 'microsoft-graph';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
+import { PresenceEntity } from '../entities/presence.entity';
 import { UserEntity } from '../entities/user.entity';
+import { PHOTO_SIZE } from '../ms-graph-api.config';
 
 const SELECT_FIELDS = [
   'id',
@@ -35,5 +37,25 @@ export class UsersService extends ODataEntitySetService<User> {
       .query((q) => q.select(SELECT_FIELDS))
       .fetchAll({ headers, withCount: true })
       .pipe(map(({ entities }) => entities.map(transform)));
+  }
+
+  // プロファイル写真を取得
+  // 404のときはnull
+  public getProfilePhoto(userId: string): Observable<Blob | null> {
+    const path = `users/${userId}/photos/${PHOTO_SIZE}/$value`;
+    const resource = this.client.singleton(path);
+
+    return this.client.get(resource, { responseType: 'blob' }).pipe(
+      catchError((err) => {
+        return of(null) as Observable<Blob | null>;
+      })
+    );
+  }
+
+  // プレゼンス&ステータスメッセージを取得
+  public getPresence(userId: string): Observable<PresenceEntity | null> {
+    const path = `users/${userId}/presence`;
+
+    return this.client.singleton<PresenceEntity>(path, 'beta').fetchEntity();
   }
 }

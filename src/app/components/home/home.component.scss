@@ -1,3 +1,18 @@
-.flex-fill {
-  flex: 1 1 auto;
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  mat-toolbar {
+    flex: 0 0 56px;
+  }
+
+  app-following-list {
+    flex: 1 1 auto;
+    overflow-y: auto;
+  }
+
+  app-status-message-bar {
+    flex: 0 0 56px;
+  }
 }

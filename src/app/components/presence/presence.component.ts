@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PresenceEntity, UserEntity, UserService } from '../../ms-graph-api';
+import { PresenceEntity, UserEntity, UsersService } from '../../ms-graph-api';
 import { FollowingService } from '../../services/following.service';
 
 @Component({
@@ -18,15 +18,15 @@ export class PresenceComponent implements OnInit {
   @Input()
   targetDate!: Date;
 
-  presence$?: Observable<PresenceEntity>;
+  presence$?: Observable<PresenceEntity | null>;
 
   constructor(
-    private userService: UserService,
+    private usersService: UsersService,
     private followingService: FollowingService
   ) {}
 
   ngOnInit(): void {
-    this.presence$ = this.userService.getPresence(this.user.id);
+    this.presence$ = this.usersService.getPresence(this.user.id);
   }
 
   remove(): void {

@@ -7,7 +7,7 @@
       <div>{{user.displayName}}</div>
       <app-availability [presence]="presence"></app-availability>
     </div>
-    <app-status-message [presence]="presence" class="status-message"></app-status-message>
+    <div class="status-message">{{presence.statusMessage?.message ?? ''}}</div>
     <app-schedule [user]="user" [targetDate]="targetDate" class="schedule"></app-schedule>
   </mat-card-content>
 </mat-card>

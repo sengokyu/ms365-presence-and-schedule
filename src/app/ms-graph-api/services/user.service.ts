@@ -3,10 +3,11 @@ import { ODataClient } from 'angular-odata';
 import { ScheduleInformation, ScheduleItem } from 'microsoft-graph';
 import { map, Observable } from 'rxjs';
 import { newDateTime } from '../../utils/date-utils';
-import { PresenceEntity } from '../entities/presence.entity';
+import { ExtendedPresence, PresenceEntity } from '../entities/presence.entity';
 import { ScheduleItemEntity } from '../entities/schedule-item.entity';
 import { StatusMessageEntity } from '../entities/status-message.entity';
 import { PREFERRED_TIME_ZONE } from '../ms-graph-api.config';
+import { PresenceTransform } from '../transforms/presence-transform';
 
 @Injectable()
 export class UserService {
@@ -16,7 +17,10 @@ export class UserService {
   public getPresence(): Observable<PresenceEntity | null> {
     const path = `me/presence`;
 
-    return this.client.singleton<PresenceEntity>(path, 'beta').fetchEntity();
+    return this.client
+      .singleton<ExtendedPresence>(path, 'beta')
+      .fetchEntity()
+      .pipe(map(PresenceTransform.presence2entity));
   }
 
   public setStatusMessage(statusMessage: StatusMessageEntity): Observable<any> {

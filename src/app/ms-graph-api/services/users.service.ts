@@ -1,11 +1,13 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Presence } from '@microsoft/microsoft-graph-types-beta';
 import { ODataClient, ODataEntitySetService } from 'angular-odata';
 import { User } from 'microsoft-graph';
 import { catchError, map, Observable, of } from 'rxjs';
-import { PresenceEntity } from '../entities/presence.entity';
+import { ExtendedPresence, PresenceEntity } from '../entities/presence.entity';
 import { UserEntity } from '../entities/user.entity';
 import { PHOTO_SIZE } from '../ms-graph-api.config';
+import { PresenceTransform } from '../transforms/presence-transform';
 
 const SELECT_FIELDS = [
   'id',
@@ -56,6 +58,9 @@ export class UsersService extends ODataEntitySetService<User> {
   public getPresence(userId: string): Observable<PresenceEntity | null> {
     const path = `users/${userId}/presence`;
 
-    return this.client.singleton<PresenceEntity>(path, 'beta').fetchEntity();
+    return this.client
+      .singleton<ExtendedPresence>(path, 'beta')
+      .fetchEntity()
+      .pipe(map(PresenceTransform.presence2entity));
   }
 }

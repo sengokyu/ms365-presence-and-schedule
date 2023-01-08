@@ -31,7 +31,11 @@ export class StatusMessageFormComponent implements OnInit, OnDestroy {
       this.currentUserStatusMessageService.statusMessage$
         .pipe(filter((x) => !!x))
         .subscribe((x) => {
-          this.form.setValue(x as Required<StatusMessageEntity>);
+          this.form.setValue({
+            message: x?.message ?? null,
+            pinned: x?.pinned ?? false,
+            expiryDate: x?.expiryDate ?? null,
+          });
         })
     );
   }

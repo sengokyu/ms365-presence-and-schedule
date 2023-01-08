@@ -1,10 +1,13 @@
-import { PresenceEntity } from '../entities/presence.entity';
+import { ExtendedPresence } from '../entities/presence.entity';
 import { StatusMessageEntity } from '../entities/status-message.entity';
 
 export class StatusMessageTransform {
   public static presence2statusMessage(
-    src: PresenceEntity | null
+    src: ExtendedPresence | null
   ): StatusMessageEntity {
+    const publishedDateTime = src?.statusMessage?.publishedDateTime
+      ? new Date(src.statusMessage.publishedDateTime)
+      : undefined;
     const pinned =
       src?.statusMessage?.message.content.endsWith(
         '<pinnednote></pinnednote>'
@@ -19,6 +22,6 @@ export class StatusMessageTransform {
         ? new Date(src.statusMessage?.expiryDateTime.dateTime! + 'Z')
         : null;
 
-    return { message, pinned, expiryDate };
+    return { publishedDateTime, message, pinned, expiryDate };
   }
 }

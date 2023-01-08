@@ -32,7 +32,6 @@ import { PresenceComponent } from './components/presence/presence.component';
 import { ScheduleComponent } from './components/schedule/schedule.component';
 import { StatusMessageBarComponent } from './components/status-message-bar/status-message-bar.component';
 import { StatusMessageFormComponent } from './components/status-message-form/status-message-form.component';
-import { StatusMessageComponent } from './components/status-message/status-message.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { MsGraphApiModule } from './ms-graph-api';
@@ -48,7 +47,6 @@ import { MsGraphApiModule } from './ms-graph-api';
     AvailabilityComponent,
     AvatarComponent,
     ScheduleComponent,
-    StatusMessageComponent,
     StatusMessageFormComponent,
     StatusMessageBarComponent,
   ],

@@ -1,7 +1,9 @@
 import { Presence } from '@microsoft/microsoft-graph-types-beta';
 import { AvailabilityType } from './availability.type';
+import { StatusMessageEntity } from './status-message.entity';
 
-export interface PresenceEntity extends Presence {
+// beta版の戻り値
+export interface ExtendedPresence extends Presence {
   availability?: AvailabilityType;
   statusMessage?: null | {
     publishedDateTime: string;
@@ -14,4 +16,9 @@ export interface PresenceEntity extends Presence {
       timeZone: string;
     };
   };
+}
+
+export interface PresenceEntity extends Presence {
+  availability?: AvailabilityType;
+  statusMessage?: null | StatusMessageEntity;
 }

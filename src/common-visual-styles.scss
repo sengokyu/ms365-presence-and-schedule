@@ -1,0 +1,21 @@
+.full-width {
+  width: 100%;
+}
+
+.centering {
+  text-align: center;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-fill {
+  flex: 1 1 auto;
+}
+
+// SVGアイコンの色
+mat-toolbar mat-icon svg {
+  fill: currentColor;
+}

@@ -9,6 +9,10 @@ export class DateService {
     return newDateTime(new Date());
   }
 
+  get nowDate(): Date {
+    return new Date();
+  }
+
   get now(): number {
     return Date.now();
   }

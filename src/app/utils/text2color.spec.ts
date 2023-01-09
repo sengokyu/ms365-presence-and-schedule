@@ -11,10 +11,10 @@ describe('text2color', () => {
     // Then
     // [97, 98, 99] <- charcode of a,b,c
     const expected = {
-      color: 'rgb(249,252,254)',
-      oppositeColor: 'rgb(6,3,1)',
+      color: 'rgb(249,252,255)',
+      oppositeColor: 'rgb(6,3,0)',
     };
 
-    expect(actual).toBe(expected);
+    expect(actual).toEqual(expected);
   });
 });

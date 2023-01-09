@@ -24,3 +24,11 @@ export const newDateTime = (
 
   return newDate;
 };
+
+// 週末はスキップして次の日を返す
+export const nextBusinessDate = (src: Date): Date => {
+  const day = src.getDay();
+  const inc = day < 5 ? 1 : 8 - day;
+
+  return new Date(src.getFullYear(), src.getMonth(), src.getDate() + inc);
+};

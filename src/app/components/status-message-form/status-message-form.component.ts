@@ -5,6 +5,7 @@ import { filter, Subscription } from 'rxjs';
 import { CurrentUserStatusMessageService } from 'src/app/services/current-user-status-message.service';
 import { StatusMessageEntity } from '../../ms-graph-api';
 import { DateService } from '../../services/date.service';
+import { generateExpiryDateOptions } from './expiry-date-options';
 
 @Component({
   selector: 'app-status-message-form',
@@ -19,6 +20,8 @@ export class StatusMessageFormComponent implements OnInit, OnDestroy {
     pinned: new FormControl<boolean>(false),
     expiryDate: new FormControl<Date | null>(null),
   });
+
+  expiryDateOptions = generateExpiryDateOptions(this.dateService.nowDate);
 
   constructor(
     private bottomSheetRef: MatBottomSheetRef<StatusMessageFormComponent>,

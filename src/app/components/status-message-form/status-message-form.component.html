@@ -9,11 +9,8 @@
   <mat-form-field appearance="fill">
     <mat-label>有効期間</mat-label>
     <mat-select formControlName="expiryDate">
-      <mat-option>なし</mat-option>
-      <mat-option>1時間</mat-option>
-      <mat-option>4時間</mat-option>
-      <mat-option>今日</mat-option>
-      <mat-option>今週</mat-option>
+      <mat-option [value]="null">なし</mat-option>
+      <mat-option *ngFor="let i of expiryDateOptions" [value]="i.value">{{i.label}}</mat-option>
     </mat-select>
   </mat-form-field>
 

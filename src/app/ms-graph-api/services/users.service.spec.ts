@@ -1,12 +1,21 @@
 import { TestBed } from '@angular/core/testing';
+import { ODataClient } from 'angular-odata';
 
 import { UsersService } from './users.service';
 
-describe('UserService', () => {
+describe('UsersService', () => {
   let service: UsersService;
+  let oDataClient;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    oDataClient = jasmine.createSpyObj<ODataClient>(['singleton']);
+
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: ODataClient, useValue: oDataClient },
+        UsersService,
+      ],
+    });
     service = TestBed.inject(UsersService);
   });
 

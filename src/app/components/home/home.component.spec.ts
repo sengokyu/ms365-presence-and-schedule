@@ -1,7 +1,20 @@
+import { Directive, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { HomeComponent } from './home.component';
+
+@Directive({ selector: 'app-following-list' })
+class FakeFollowingList {
+  @Input()
+  editMode?: boolean;
+}
+
+@Directive({ selector: 'app-status-message-bar' })
+class FakeStatusMessageBar {}
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -14,7 +27,8 @@ describe('HomeComponent', () => {
     ]);
 
     await TestBed.configureTestingModule({
-      declarations: [HomeComponent],
+      declarations: [FakeFollowingList, FakeStatusMessageBar, HomeComponent],
+      imports: [MatIconModule, MatMenuModule, MatToolbarModule],
       providers: [
         { provide: OidcSecurityService, useValue: oidcSecurityService },
       ],

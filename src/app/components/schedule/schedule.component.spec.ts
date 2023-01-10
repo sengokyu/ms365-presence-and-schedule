@@ -1,27 +1,34 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { createComponentFactory, Spectator } from '@ngneat/spectator';
+import { UserEntity } from 'src/app/ms-graph-api';
 
 import { UserService } from '../../ms-graph-api/services/user.service';
 import { ScheduleComponent } from './schedule.component';
 
 describe('ScheduleComponent', () => {
-  let component: ScheduleComponent;
-  let fixture: ComponentFixture<ScheduleComponent>;
+  let spectator: Spectator<ScheduleComponent>;
+  const createComponent = createComponentFactory({
+    component: ScheduleComponent,
+  });
   let userService;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     userService = jasmine.createSpyObj<UserService>(['getScheduleItems']);
 
-    await TestBed.configureTestingModule({
-      declarations: [ScheduleComponent],
-      providers: [{ provide: UserService, useValue: userService }],
-    }).compileComponents();
+    const user: UserEntity = {
+      id: 'hoge',
+      displayName: '',
+      department: '',
+      mail: '',
+      userPrincipalName: '',
+    };
 
-    fixture = TestBed.createComponent(ScheduleComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    spectator = createComponent({
+      props: { user },
+      providers: [{ provide: UserService, useValue: userService }],
+    });
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(spectator).toBeTruthy();
   });
 });

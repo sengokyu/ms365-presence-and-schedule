@@ -1,27 +1,38 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Observable } from 'rxjs';
 
-import { UsersService } from '../../ms-graph-api';
+import { createComponentFactory, Spectator } from '@ngneat/spectator';
+import { UserEntity, UsersService } from '../../ms-graph-api';
 import { AvatarComponent } from './avatar.component';
 
 describe('AvatarComponent', () => {
-  let component: AvatarComponent;
-  let fixture: ComponentFixture<AvatarComponent>;
+  let spectator: Spectator<AvatarComponent>;
+  const createComponent = createComponentFactory({
+    component: AvatarComponent,
+  });
   let usersService;
 
   beforeEach(async () => {
     usersService = jasmine.createSpyObj<UsersService>(['getProfilePhoto']);
 
-    await TestBed.configureTestingModule({
-      declarations: [AvatarComponent],
-      providers: [{ provide: UsersService, useValue: usersService }],
-    }).compileComponents();
+    usersService.getProfilePhoto.and.returnValue(
+      jasmine.createSpyObj<Observable<Blob | null>>(['pipe'])
+    );
 
-    fixture = TestBed.createComponent(AvatarComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    const user: UserEntity = {
+      id: 'hoge',
+      displayName: '',
+      department: '',
+      mail: '',
+      userPrincipalName: '',
+    };
+
+    spectator = createComponent({
+      props: { user },
+      providers: [{ provide: UsersService, useValue: usersService }],
+    });
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(spectator).toBeTruthy();
   });
 });

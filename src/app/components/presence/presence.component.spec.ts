@@ -1,35 +1,44 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { createComponentFactory, Spectator } from '@ngneat/spectator';
 
-import { UsersService } from '../../ms-graph-api';
+import { MatCardModule } from '@angular/material/card';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { UserEntity, UsersService } from '../../ms-graph-api';
 import { FollowingService } from '../../services/following.service';
 import { PresenceComponent } from './presence.component';
 
 describe('PresenceComponent', () => {
-  let component: PresenceComponent;
-  let fixture: ComponentFixture<PresenceComponent>;
+  let spectator: Spectator<PresenceComponent>;
+  const createComponent = createComponentFactory({
+    component: PresenceComponent,
+    imports: [MatCardModule, MatProgressBarModule],
+  });
   let usersService;
   let followingService;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     usersService = jasmine.createSpyObj<UsersService>(['getPresence']);
     followingService = jasmine.createSpyObj<FollowingService>([
       'removeFollowing',
     ]);
 
-    await TestBed.configureTestingModule({
-      declarations: [PresenceComponent],
+    const user: UserEntity = {
+      id: 'hoge',
+      displayName: '',
+      department: '',
+      mail: '',
+      userPrincipalName: '',
+    };
+
+    spectator = createComponent({
+      props: { user },
       providers: [
         { provide: UsersService, useValue: usersService },
         { provide: FollowingService, useValue: followingService },
       ],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(PresenceComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    });
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(spectator).toBeTruthy();
   });
 });

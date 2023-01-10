@@ -1,28 +1,54 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { createComponentFactory, Spectator } from '@ngneat/spectator';
+import { Observable } from 'rxjs';
+import { StatusMessageEntity } from '../../ms-graph-api/entities/status-message.entity';
 import { CurrentUserStatusMessageService } from '../../services/current-user-status-message.service';
 import { DateService } from '../../services/date.service';
 import { StatusMessageFormComponent } from './status-message-form.component';
 
 describe('StatusMessageFormComponent', () => {
-  let component: StatusMessageFormComponent;
-  let fixture: ComponentFixture<StatusMessageFormComponent>;
+  let spectator: Spectator<StatusMessageFormComponent>;
+  const createComponent = createComponentFactory({
+    component: StatusMessageFormComponent,
+    imports: [
+      ReactiveFormsModule,
+      MatButtonModule,
+      MatCheckboxModule,
+      MatFormFieldModule,
+      MatInputModule,
+      MatSelectModule,
+    ],
+  });
   let matBottomSheetRef;
   let currentUserStatusMessageService;
   let dateService;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     matBottomSheetRef = jasmine.createSpyObj<
       MatBottomSheetRef<StatusMessageFormComponent>
     >(['dismiss']);
-    currentUserStatusMessageService =
-      jasmine.createSpyObj<CurrentUserStatusMessageService>(['save']);
-    dateService = { nowDate: null };
+    const statusMessage$ = jasmine.createSpyObj<
+      Observable<StatusMessageEntity | null>
+    >(['pipe', 'subscribe']);
 
-    await TestBed.configureTestingModule({
-      declarations: [StatusMessageFormComponent],
-      imports: [],
+    statusMessage$.pipe.and.returnValue(statusMessage$);
+
+    currentUserStatusMessageService =
+      jasmine.createSpyObj<CurrentUserStatusMessageService>(['save'], {
+        statusMessage$,
+      });
+    dateService = jasmine.createSpyObj<DateService>(
+      {},
+      { nowDate: new Date('2023-06-04T00:00:00') }
+    );
+
+    spectator = createComponent({
       providers: [
         {
           provide: MatBottomSheetRef<StatusMessageFormComponent>,
@@ -34,14 +60,10 @@ describe('StatusMessageFormComponent', () => {
         },
         { provide: DateService, useValue: dateService },
       ],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(StatusMessageFormComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    });
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(spectator).toBeTruthy();
   });
 });

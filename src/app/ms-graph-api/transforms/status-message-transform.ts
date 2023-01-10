@@ -8,18 +8,12 @@ export class StatusMessageTransform {
     const publishedDateTime = src?.statusMessage?.publishedDateTime
       ? new Date(src.statusMessage.publishedDateTime)
       : undefined;
-    const pinned =
-      src?.statusMessage?.message.content.endsWith(
-        '<pinnednote></pinnednote>'
-      ) ?? false;
-    const message =
-      src?.statusMessage?.message.content.replace(
-        /<pinnednote><\/pinnednote>$/,
-        ''
-      ) ?? '';
+    const content = src?.statusMessage?.message?.content ?? '';
+    const pinned = content.endsWith('<pinnednote></pinnednote>');
+    const message = content.replace(/<pinnednote><\/pinnednote>$/, '') ?? '';
     const expiryDate =
-      src?.statusMessage?.expiryDateTime.timeZone === 'UTC'
-        ? new Date(src.statusMessage?.expiryDateTime.dateTime! + 'Z')
+      src?.statusMessage?.expiryDateTime?.timeZone === 'UTC'
+        ? new Date(src.statusMessage.expiryDateTime.dateTime! + 'Z')
         : null;
 
     return { publishedDateTime, message, pinned, expiryDate };

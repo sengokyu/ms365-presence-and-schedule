@@ -32,3 +32,6 @@ export const nextBusinessDate = (src: Date): Date => {
 
   return new Date(src.getFullYear(), src.getMonth(), src.getDate() + inc);
 };
+
+// 平日かどうかを返す
+export const isBusinessDay = (src: Date): boolean => src.getDay() % 6 !== 0;

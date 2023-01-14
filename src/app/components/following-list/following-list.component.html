@@ -4,8 +4,8 @@
     <button mat-raised-button color="primary" routerLink="/user-list">フォローするメンバーを追加する</button>
   </div>
 
-  <app-presence *ngFor="let following of followings" [user]="following" [targetDate]="targetDate"
-    [editMode]="editMode"></app-presence>
+  <app-presence *ngFor="let following of followings" [user]="following" [targetDate]="targetDate" [editMode]="editMode"
+    (remove)="remove(following)"></app-presence>
 
   <div *ngIf="followings.length !== 0 && editMode" class="centering">
     <button mat-raised-button color="primary" routerLink="/user-list">フォローするメンバーを追加する</button>

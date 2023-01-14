@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
   selector: 'app-home',
@@ -8,10 +7,4 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
 })
 export class HomeComponent {
   editMode = false;
-
-  constructor(private oidcSecurityService: OidcSecurityService) {}
-
-  logout(): void {
-    this.oidcSecurityService.logoffAndRevokeTokens().subscribe();
-  }
 }

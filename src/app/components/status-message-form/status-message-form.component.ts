@@ -23,6 +23,9 @@ export class StatusMessageFormComponent implements OnInit, OnDestroy {
 
   expiryDateOptions = generateExpiryDateOptions(this.dateService.nowDate);
 
+  // 保存中
+  saving = false;
+
   constructor(
     private bottomSheetRef: MatBottomSheetRef<StatusMessageFormComponent>,
     private currentUserStatusMessageService: CurrentUserStatusMessageService,
@@ -48,10 +51,17 @@ export class StatusMessageFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
+    this.saving = true;
+
     this.currentUserStatusMessageService
       .save(this.getStatusMessageEntity())
-      .subscribe(() => {
-        this.bottomSheetRef.dismiss();
+      .subscribe({
+        next: () => {
+          this.bottomSheetRef.dismiss();
+        },
+        error: () => {
+          this.saving = false;
+        },
       });
   }
 

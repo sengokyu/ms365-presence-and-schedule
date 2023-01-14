@@ -15,6 +15,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LocalStorageModule } from '@practical-angular/local-storage';
@@ -35,6 +36,7 @@ import { StatusMessageFormComponent } from './components/status-message-form/sta
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { MsGraphApiModule } from './ms-graph-api';
+import { SettingsButtonComponent } from './components/settings-button/settings-button.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,7 @@ import { MsGraphApiModule } from './ms-graph-api';
     ScheduleComponent,
     StatusMessageFormComponent,
     StatusMessageBarComponent,
+    SettingsButtonComponent,
   ],
   imports: [
     BrowserModule,
@@ -68,6 +71,7 @@ import { MsGraphApiModule } from './ms-graph-api';
     MatSortModule,
     MatTableModule,
     MatToolbarModule,
+    MatTooltipModule,
     LocalStorageModule,
     AppIconsModule,
     AppRoutingModule,

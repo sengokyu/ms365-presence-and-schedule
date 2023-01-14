@@ -1,6 +1,6 @@
 <mat-card *ngIf="presence$ | async as presence; else loading">
   <mat-card-content class="card-content">
-    <button *ngIf="editMode" (click)="remove()" mat-icon-button color="warn"
+    <button *ngIf="editMode" (click)="remove.emit()" mat-icon-button color="warn"
       class="clear-button"><mat-icon>clear</mat-icon></button>
     <app-avatar [user]="user" class="avatar"></app-avatar>
     <div class="name">

@@ -1,7 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Observable, timer } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { PresenceEntity, UserEntity, UsersService } from '../../ms-graph-api';
-import { FollowingService } from '../../services/following.service';
+import { SettingsService } from '../../services/settings.service';
 
 @Component({
   selector: 'app-presence',
@@ -18,18 +19,19 @@ export class PresenceComponent implements OnInit {
   @Input()
   targetDate!: Date;
 
+  @Output()
+  remove = new EventEmitter<void>();
+
   presence$?: Observable<PresenceEntity | null>;
 
   constructor(
-    private usersService: UsersService,
-    private followingService: FollowingService
+    private settingsService: SettingsService,
+    private usersService: UsersService
   ) {}
 
   ngOnInit(): void {
-    this.presence$ = this.usersService.getPresence(this.user.id);
-  }
-
-  remove(): void {
-    this.followingService.removeFollowing(this.user);
+    this.presence$ = this.settingsService.updateInterval$
+      .pipe(switchMap((x) => timer(0, x * 60000)))
+      .pipe(switchMap(() => this.usersService.getPresence(this.user.id)));
   }
 }

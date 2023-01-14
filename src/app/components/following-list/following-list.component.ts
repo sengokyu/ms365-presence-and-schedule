@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { UserEntity } from '../../ms-graph-api';
 import { DateService } from '../../services/date.service';
 import { FollowingService } from '../../services/following.service';
 
@@ -19,4 +20,8 @@ export class FollowingListComponent {
     private followingService: FollowingService,
     private dateService: DateService
   ) {}
+
+  remove(user: UserEntity): void {
+    this.followingService.removeFollowing(user);
+  }
 }

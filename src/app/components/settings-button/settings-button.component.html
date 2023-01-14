@@ -1,0 +1,26 @@
+<button mat-icon-button [matMenuTriggerFor]="menu">
+  <mat-icon>settings</mat-icon>
+</button>
+
+<mat-menu #menu="matMenu">
+  <button mat-menu-item routerLink="/user-list">
+    <mat-icon>person_add</mat-icon>
+    <span>フォローするメンバーを選択</span>
+  </button>
+  <button mat-menu-item [matMenuTriggerFor]="updateInterval"><mat-icon>timelapse</mat-icon>更新頻度</button>
+  <button mat-menu-item (click)="logout()">
+    <mat-icon>logout</mat-icon>
+    <span>ログアウト</span>
+  </button>
+</mat-menu>
+
+<mat-menu #updateInterval="matMenu">
+  <ng-container *ngIf="updateIntervalOptions$ | async as updateIntervalOptions">
+    <button mat-menu-item *ngFor="let i of updateIntervalOptions" (click)="setUpdateInterval(i.value)"
+      class="update-interval-option">
+      <mat-icon inline *ngIf="i.selected">check</mat-icon>
+      <span class="icon-space" *ngIf="!i.selected"></span>
+      <span class="label">{{i.value}}分毎</span>
+    </button>
+  </ng-container>
+</mat-menu>

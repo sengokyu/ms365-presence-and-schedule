@@ -1,6 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Presence } from '@microsoft/microsoft-graph-types-beta';
 import { ODataClient, ODataEntitySetService } from 'angular-odata';
 import { User } from 'microsoft-graph';
 import { catchError, map, Observable, of } from 'rxjs';
@@ -37,6 +36,7 @@ export class UsersService extends ODataEntitySetService<User> {
     return this.entities()
       .query((q) => q.filter("userType ne 'Guest'"))
       .query((q) => q.select(SELECT_FIELDS))
+      .query((q) => q.orderBy('displayName'))
       .fetchAll({ headers, withCount: true })
       .pipe(map(({ entities }) => entities.map(transform)));
   }

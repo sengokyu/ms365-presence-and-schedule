@@ -33,7 +33,6 @@ export class FollowingService {
 
     if (0 <= index) {
       const followings = this._followings.getValue();
-      console.log(followings);
       followings.splice(index, 1);
       this.setFollowings(followings);
     }

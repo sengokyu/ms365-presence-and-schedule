@@ -10,6 +10,8 @@ export const msAuthConfig: OpenIdConfiguration = {
   responseType: 'code',
   silentRenew: true,
   useRefreshToken: true,
+  // Don't use nonce at refresh
+  ignoreNonceAfterRefresh: true,
   autoUserInfo: false,
   issValidationOff: true,
   // Necessary for validating id token

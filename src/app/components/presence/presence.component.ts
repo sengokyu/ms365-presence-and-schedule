@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable, timer } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { retry, switchMap } from 'rxjs/operators';
 import { PresenceEntity, UserEntity, UsersService } from '../../ms-graph-api';
 import { SettingsService } from '../../services/settings.service';
 
@@ -32,6 +32,12 @@ export class PresenceComponent implements OnInit {
   ngOnInit(): void {
     this.presence$ = this.settingsService.updateInterval$
       .pipe(switchMap((x) => timer(0, x * 60000 + Math.random() * 30000)))
-      .pipe(switchMap(() => this.usersService.getPresence(this.user.id)));
+      .pipe(
+        switchMap(() => this.usersService.getPresence(this.user.id)),
+        retry({
+          delay: (_, count) => timer(count * 1000),
+          resetOnSuccess: true,
+        })
+      );
   }
 }

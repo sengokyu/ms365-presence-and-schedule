@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ScheduleItem } from 'microsoft-graph';
-import { Observable } from 'rxjs';
+import { Observable, retry, timer } from 'rxjs';
 import { A_HOUR_IN_MM } from 'src/app/utils/date-utils';
 import {
   ScheduleItemEntity,
@@ -60,10 +60,14 @@ export class ScheduleComponent implements OnInit {
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    this.scheduleItems$ = this.userService.getScheduleItems(
-      this.user.mail,
-      this.targetDate
-    );
+    this.scheduleItems$ = this.userService
+      .getScheduleItems(this.user.mail, this.targetDate)
+      .pipe(
+        retry({
+          delay: (_, count) => timer(count * 1000),
+          resetOnSuccess: true,
+        })
+      );
   }
 
   calcViewBox(count: number): string {

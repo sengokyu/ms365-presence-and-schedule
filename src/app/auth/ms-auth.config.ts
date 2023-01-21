@@ -9,6 +9,7 @@ export const msAuthConfig: OpenIdConfiguration = {
   scope: 'openid email profile .default',
   responseType: 'code',
   silentRenew: true,
+  // Azure AD provides refresh token to me
   useRefreshToken: true,
   // Don't use nonce at refresh
   ignoreNonceAfterRefresh: true,
@@ -16,6 +17,8 @@ export const msAuthConfig: OpenIdConfiguration = {
   issValidationOff: true,
   // Necessary for validating id token
   maxIdTokenIatOffsetAllowedInSeconds: 600,
+  // Azure AD gives 60 minutes to expiring access token
+  tokenRefreshInSeconds: 15,
   customParamsAuthRequest: {
     prompt: 'select_account',
   },

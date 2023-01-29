@@ -27,34 +27,6 @@ export class ScheduleComponent implements OnInit {
   @Input()
   targetDate!: Date;
 
-  // 背景の列
-  hours = [
-    '0',
-    '',
-    '',
-    '3',
-    '',
-    '',
-    '6',
-    '',
-    '',
-    '9',
-    '',
-    '',
-    '12',
-    '',
-    '',
-    '15',
-    '',
-    '',
-    '18',
-    '',
-    '',
-    '21',
-    '',
-    '',
-  ];
-
   scheduleItems$?: Observable<ScheduleItem[] | null | undefined>;
 
   constructor(private userService: UserService) {}

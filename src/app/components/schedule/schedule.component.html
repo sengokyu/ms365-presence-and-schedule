@@ -28,7 +28,8 @@
     </defs>
 
     <!-- 背景 縦棒-->
-    <g *ngFor="let hour of hours; let i=index" class="hour-bar">
+    <g *ngFor="let hour of [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]; let i=index"
+      class="hour-bar">
       <rect [attr.x]="(32*i)+'px'" y="0" width="24px" height="100%" rx="12px" ry="12px" />
       <text [attr.x]="(32*i+12)+'px'" y="18px" text-anchor="middle" class="hour-text">{{hour}}</text>
     </g>

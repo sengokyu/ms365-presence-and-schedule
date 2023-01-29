@@ -1,0 +1,8 @@
+{
+    "files.watcherExclude": {
+        "/submodules/**": true
+    },
+    "search.exclude": {
+        "/submodules": true
+    }
+}

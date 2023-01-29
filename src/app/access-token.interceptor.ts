@@ -18,7 +18,7 @@ export class AccessTokenInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    if (!this.isOdataUrl(request.url)) {
+    if (!this.isProtectedUrl(request.url)) {
       return next.handle(request);
     }
 
@@ -36,7 +36,10 @@ export class AccessTokenInterceptor implements HttpInterceptor {
     });
   }
 
-  private isOdataUrl(url: string): boolean {
-    return msGraphApiConfig.some((x) => url.startsWith(x.serviceRootUrl));
+  private isProtectedUrl(url: string): boolean {
+    return (
+      url.startsWith(FOLLOWINGS_API_URL) ||
+      msGraphApiConfig.some((x) => url.startsWith(x.serviceRootUrl))
+    );
   }
 }

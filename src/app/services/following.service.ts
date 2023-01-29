@@ -1,9 +1,11 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LocalStorageService } from '@practical-angular/local-storage';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, first, map, Observable, of } from 'rxjs';
 import { UserEntity } from '../ms-graph-api';
 
-const STORAGE_KEY = 'followings';
+interface TableValue {
+  followings: string; // JSON serialized string
+}
 
 // フォロー中のユーザ
 @Injectable({
@@ -12,20 +14,20 @@ const STORAGE_KEY = 'followings';
 export class FollowingService {
   private readonly _followings = new BehaviorSubject<Array<UserEntity>>([]);
 
-  public get followings$(): Observable<Array<UserEntity>> {
-    return this._followings.asObservable();
-  }
+  public readonly followings$ = this._followings.asObservable();
 
-  constructor(private localStorageService: LocalStorageService) {
+  constructor(private http: HttpClient) {
     this.loadFollowings();
   }
 
   public addFollowing(user: UserEntity): void {
-    if (!this.isFollowingExists(user)) {
-      const followings = this._followings.value;
-      followings.push(user);
-      this.setFollowings(followings);
+    if (this.isFollowingExists(user)) {
+      return;
     }
+
+    const followings = this._followings.value;
+    followings.push(user);
+    this.setFollowings(followings);
   }
 
   public removeFollowing(user: UserEntity): void {
@@ -39,9 +41,7 @@ export class FollowingService {
   }
 
   private loadFollowings(): void {
-    this._followings.next(
-      this.localStorageService.getItem(STORAGE_KEY, []) ?? []
-    );
+    this.getFromTable().subscribe((x) => this._followings.next(x));
   }
 
   private isFollowingExists(user: UserEntity): boolean {
@@ -53,7 +53,22 @@ export class FollowingService {
   }
 
   private setFollowings(value: Array<UserEntity>): void {
-    this.localStorageService.setItem(STORAGE_KEY, value);
-    this._followings.next(value);
+    this.setToTable(value).subscribe(() => {
+      this._followings.next(value);
+    });
+  }
+
+  private getFromTable(): Observable<Array<UserEntity>> {
+    return this.http.get<TableValue>(FOLLOWINGS_API_URL).pipe(
+      first(),
+      map((x) => JSON.parse(x.followings) as Array<UserEntity>),
+      catchError((_) => of([]))
+    );
+  }
+
+  private setToTable(value: Array<UserEntity>): Observable<unknown> {
+    const body: TableValue = { followings: JSON.stringify(value) };
+
+    return this.http.post(FOLLOWINGS_API_URL, body, { responseType: 'text' });
   }
 }

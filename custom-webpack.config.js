@@ -7,9 +7,8 @@ module.exports = {
       // webpackの中から注入する
       CLIENT_ID: JSON.stringify(process.env["CLIENT_ID"]),
       TENANT_ID: JSON.stringify(process.env["TENANT_ID"]),
-      FOLLOWINGS_API_URL: JSON.stringify(
-        process.env["FOLLOWINGS_API_URL"]
-      ),
+      STORAGE_API_URL: JSON.stringify(process.env["STORAGE_API_URL"]),
+      FUNCTION_CODE: JSON.stringify(process.env["FUNCTION_CODE"]),
     }),
   ],
 };

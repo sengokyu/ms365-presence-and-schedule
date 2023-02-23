@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
@@ -31,12 +32,12 @@ import { FollowingListComponent } from './components/following-list/following-li
 import { HomeComponent } from './components/home/home.component';
 import { PresenceComponent } from './components/presence/presence.component';
 import { ScheduleComponent } from './components/schedule/schedule.component';
+import { SettingsButtonComponent } from './components/settings-button/settings-button.component';
 import { StatusMessageBarComponent } from './components/status-message-bar/status-message-bar.component';
 import { StatusMessageFormComponent } from './components/status-message-form/status-message-form.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { MsGraphApiModule } from './ms-graph-api';
-import { SettingsButtonComponent } from './components/settings-button/settings-button.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { SettingsButtonComponent } from './components/settings-button/settings-b
     MatInputModule,
     MatMenuModule,
     MatProgressBarModule,
+    MatProgressSpinnerModule,
     MatRippleModule,
     MatSelectModule,
     MatSortModule,

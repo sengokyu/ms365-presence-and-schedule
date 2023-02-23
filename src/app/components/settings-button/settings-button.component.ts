@@ -25,11 +25,11 @@ export class SettingsButtonComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.updateIntervalOptions$ = this.settingsService.updateInterval$.pipe(
+    this.updateIntervalOptions$ = this.settingsService.settings$.pipe(
       map((x) => [
-        { value: 1, selected: 1 === x },
-        { value: 3, selected: 3 === x },
-        { value: 10, selected: 10 === x },
+        { value: 1, selected: 1 === x.updateInterval },
+        { value: 3, selected: 3 === x.updateInterval },
+        { value: 10, selected: 10 === x.updateInterval },
       ])
     );
   }

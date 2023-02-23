@@ -1,33 +1,60 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LocalStorageService } from '@practical-angular/local-storage';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, first, of, retry } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 export type UpdateIntervalType = 1 | 3 | 10;
 
-const STORAGE_KEY = 'updateInterval';
-const DEFAULT_UPDATE_INTERVAL: UpdateIntervalType = 1;
+export interface SettingsEntity {
+  updateInterval: UpdateIntervalType;
+}
+
+const defaultSettings: SettingsEntity = {
+  updateInterval: 1,
+};
+
+const apiUrl = STORAGE_API_URL + '/settings';
+const apiOptions = { params: { code: FUNCTION_CODE } };
 
 @Injectable({
   providedIn: 'root',
 })
 export class SettingsService {
-  private readonly _updateInterval = new BehaviorSubject<UpdateIntervalType>(1);
+  private readonly _settings = new BehaviorSubject<SettingsEntity>(
+    defaultSettings
+  );
 
-  updateInterval$ = this._updateInterval.asObservable();
+  public readonly settings$ = this._settings.asObservable();
 
   public set updateInterval(value: UpdateIntervalType) {
-    this.localStorageService.setItem(STORAGE_KEY, value);
-    this._updateInterval.next(value);
+    const body = this._settings.value;
+    body.updateInterval = value;
+    this.save(body);
   }
 
-  constructor(private localStorageService: LocalStorageService) {
+  constructor(private http: HttpClient) {
     this.load();
   }
 
   private load(): void {
-    this._updateInterval.next(
-      this.localStorageService.getItem(STORAGE_KEY, DEFAULT_UPDATE_INTERVAL) ??
-        DEFAULT_UPDATE_INTERVAL
-    );
+    this.http
+      .get<SettingsEntity>(apiUrl, apiOptions)
+      .pipe(
+        first(),
+        retry(2),
+        catchError(() => of(defaultSettings))
+      )
+      .subscribe((x) => {
+        this._settings.next(x);
+      });
+  }
+
+  private save(body: SettingsEntity) {
+    this.http
+      .post(apiUrl, body, apiOptions)
+      .pipe(retry(3))
+      .subscribe(() => {
+        this._settings.next(body);
+      });
   }
 }

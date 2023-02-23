@@ -38,7 +38,7 @@ export class AccessTokenInterceptor implements HttpInterceptor {
 
   private isProtectedUrl(url: string): boolean {
     return (
-      url.startsWith(FOLLOWINGS_API_URL) ||
+      url.startsWith(STORAGE_API_URL) ||
       msGraphApiConfig.some((x) => url.startsWith(x.serviceRootUrl))
     );
   }

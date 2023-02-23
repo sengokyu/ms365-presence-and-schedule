@@ -23,7 +23,8 @@ export class UserListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   readonly needle = new FormControl('');
   readonly displayColumns = ['_dummy', 'displayName', 'department', 'mail']; // 表示対象列
-  readonly dataSource = new MatTableDataSource<UserEntity>();
+
+  dataSource?: MatTableDataSource<UserEntity>;
 
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -35,6 +36,7 @@ export class UserListComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
     this.subscription.add(
       this.usersService.getUsers().subscribe((x) => {
+        this.dataSource = new MatTableDataSource<UserEntity>();
         this.dataSource.data = x;
       })
     );
@@ -52,7 +54,9 @@ export class UserListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
+    if (this.dataSource) {
+      this.dataSource.sort = this.sort;
+    }
   }
 
   onRowClick(row: UserEntity): void {

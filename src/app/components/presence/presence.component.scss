@@ -1,5 +1,10 @@
+:host {
+  display: block;
+}
+
 mat-card {
   margin: 16px;
+  min-height: 80px;
 }
 
 .card-content {
@@ -25,8 +30,29 @@ mat-card {
   }
 }
 
-.clear-button {
+.edit-mode-overlay {
+  cursor: move;
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  background-color: rgba(255, 255, 255, 0.75);
+
+  > div {
+    display: flex;
+    height: 100%;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: stretch;
+
+    .drag-handle {
+      box-sizing: border-box;
+      flex: 0 0 48px;
+      padding: 12px;
+      background-color: rgba(192, 192, 192, 0.25);
+      overflow: hidden;
+    }
+  }
 }

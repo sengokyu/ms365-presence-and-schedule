@@ -1,7 +1,5 @@
 <mat-card *ngIf="presence$ | async as presence; else loading">
   <mat-card-content class="card-content">
-    <button *ngIf="editMode" (click)="remove.emit()" mat-icon-button color="warn"
-      class="clear-button"><mat-icon>clear</mat-icon></button>
     <app-avatar [user]="user" class="avatar"></app-avatar>
     <div class="name">
       <div>{{user.displayName}}</div>
@@ -10,6 +8,15 @@
     <div class="status-message">{{presence.statusMessage?.message ?? ''}}</div>
     <app-schedule [user]="user" [targetDate]="targetDate" class="schedule"></app-schedule>
   </mat-card-content>
+
+  <!-- overlay-mask -->
+  <div class="edit-mode-overlay" [style.display]="editMode ? 'block':'none'">
+    <div>
+      <div class="drag-handle"><mat-icon>drag_handle</mat-icon></div>
+      <button *ngIf="editMode" (click)="remove.emit()" mat-icon-button color="warn"
+        class="clear-button"><mat-icon>clear</mat-icon></button>
+    </div>
+  </div>
 </mat-card>
 
 <ng-template #loading>

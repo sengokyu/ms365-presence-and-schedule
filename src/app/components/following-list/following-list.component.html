@@ -4,8 +4,12 @@
     <button mat-raised-button color="primary" routerLink="/user-list">フォローするメンバーを追加する</button>
   </div>
 
-  <app-presence *ngFor="let following of followings" [user]="following" [targetDate]="targetDate" [editMode]="editMode"
-    (remove)="remove(following)"></app-presence>
+  <!-- D&D organizing -->
+  <div class="following-list" cdkDropList (cdkDropListDropped)="drop($event)">
+    <app-presence *ngFor="let following of followings" [user]="following" [targetDate]="targetDate"
+      [editMode]="editMode" (remove)="remove(following)" cdkDrag [cdkDragDisabled]="!editMode"
+      class="following-list-item"></app-presence>
+  </div>
 
   <div *ngIf="followings.length !== 0 && editMode" class="centering">
     <button mat-raised-button color="primary" routerLink="/user-list">フォローするメンバーを追加する</button>

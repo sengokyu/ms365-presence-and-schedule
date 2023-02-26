@@ -1,3 +1,4 @@
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -57,6 +58,7 @@ import { MsGraphApiModule } from './ms-graph-api';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    DragDropModule,
     ReactiveFormsModule,
     MatBottomSheetModule,
     MatButtonModule,

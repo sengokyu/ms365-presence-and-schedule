@@ -1,3 +1,4 @@
+import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
@@ -50,6 +51,15 @@ export class FollowingService {
       followings.splice(index, 1);
       this.setFollowings(followings);
     }
+  }
+
+  // 位置を入れ替えます
+  public organize(fromIndex: number, toIndex: number): void {
+    const followings = this._followings.getValue() ?? [];
+
+    moveItemInArray(followings, fromIndex, toIndex);
+
+    this.setFollowings(followings);
   }
 
   private loadFollowings(): void {

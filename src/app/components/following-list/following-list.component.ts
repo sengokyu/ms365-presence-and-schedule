@@ -1,3 +1,4 @@
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, Input } from '@angular/core';
 import { UserEntity } from '../../ms-graph-api';
 import { DateService } from '../../services/date.service';
@@ -23,5 +24,9 @@ export class FollowingListComponent {
 
   remove(user: UserEntity): void {
     this.followingService.removeFollowing(user);
+  }
+
+  drop(event: CdkDragDrop<Array<UserEntity>>): void {
+    this.followingService.organize(event.previousIndex, event.currentIndex);
   }
 }

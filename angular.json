@@ -82,7 +82,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "i-ki-saki-keijiban:build"
+            "buildTarget": "i-ki-saki-keijiban:build"
           }
         },
         "test": {

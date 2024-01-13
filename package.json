@@ -23,6 +23,7 @@
     "@angular/router": "^17.0.8",
     "@practical-angular/local-storage": "^17.0.0-alpha.1",
     "angular-auth-oidc-client": "^16.0.1",
+    "angular-odata": "^0.126.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"

@@ -1,3 +1,0 @@
-[submodule "submodules/angular-odata"]
-	path = submodules/angular-odata
-	url = git@github.com:sengokyu/angular-odata.git

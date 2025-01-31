@@ -16,9 +16,10 @@ const HEIGHT_OF_ITEM = 28;
 const MARGIN_OF_ITEMS = 32;
 
 @Component({
-  selector: 'app-schedule',
-  templateUrl: './schedule.component.html',
-  styleUrls: ['./schedule.component.scss'],
+    selector: 'app-schedule',
+    templateUrl: './schedule.component.html',
+    styleUrls: ['./schedule.component.scss'],
+    standalone: false
 })
 export class ScheduleComponent implements OnInit {
   @Input()

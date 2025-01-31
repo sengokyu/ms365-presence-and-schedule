@@ -7,13 +7,19 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { HomeComponent } from './home.component';
 
-@Directive({ selector: 'app-following-list' })
+@Directive({
+    selector: 'app-following-list',
+    standalone: false
+})
 class FakeFollowingList {
   @Input()
   editMode?: boolean;
 }
 
-@Directive({ selector: 'app-status-message-bar' })
+@Directive({
+    selector: 'app-status-message-bar',
+    standalone: false
+})
 class FakeStatusMessageBar {}
 
 describe('HomeComponent', () => {

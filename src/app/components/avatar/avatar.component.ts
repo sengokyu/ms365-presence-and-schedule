@@ -5,9 +5,10 @@ import { text2Color } from 'src/app/utils/text2color';
 import { UserEntity, UsersService } from '../../ms-graph-api';
 
 @Component({
-  selector: 'app-avatar',
-  templateUrl: './avatar.component.html',
-  styleUrls: ['./avatar.component.scss'],
+    selector: 'app-avatar',
+    templateUrl: './avatar.component.html',
+    styleUrls: ['./avatar.component.scss'],
+    standalone: false
 })
 export class AvatarComponent implements OnInit {
   @Input()

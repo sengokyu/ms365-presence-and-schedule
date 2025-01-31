@@ -4,9 +4,10 @@ import { CurrentUserStatusMessageService } from '../../services/current-user-sta
 import { StatusMessageFormComponent } from '../status-message-form/status-message-form.component';
 
 @Component({
-  selector: 'app-status-message-bar',
-  templateUrl: './status-message-bar.component.html',
-  styleUrls: ['./status-message-bar.component.scss'],
+    selector: 'app-status-message-bar',
+    templateUrl: './status-message-bar.component.html',
+    styleUrls: ['./status-message-bar.component.scss'],
+    standalone: false
 })
 export class StatusMessageBarComponent implements OnInit {
   statusMessage$? = this.currentUserStatusMessageService.statusMessage$;

@@ -5,9 +5,10 @@ import { DateService } from '../../services/date.service';
 import { FollowingService } from '../../services/following.service';
 
 @Component({
-  selector: 'app-following-list',
-  templateUrl: './following-list.component.html',
-  styleUrls: ['./following-list.component.scss'],
+    selector: 'app-following-list',
+    templateUrl: './following-list.component.html',
+    styleUrls: ['./following-list.component.scss'],
+    standalone: false
 })
 export class FollowingListComponent {
   @Input()

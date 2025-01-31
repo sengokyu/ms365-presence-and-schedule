@@ -5,9 +5,10 @@ import { PresenceEntity, UserEntity, UsersService } from '../../ms-graph-api';
 import { SettingsService } from '../../services/settings.service';
 
 @Component({
-  selector: 'app-presence',
-  templateUrl: './presence.component.html',
-  styleUrls: ['./presence.component.scss'],
+    selector: 'app-presence',
+    templateUrl: './presence.component.html',
+    styleUrls: ['./presence.component.scss'],
+    standalone: false
 })
 export class PresenceComponent implements OnInit {
   @Input()

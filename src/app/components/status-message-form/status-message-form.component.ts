@@ -8,9 +8,10 @@ import { DateService } from '../../services/date.service';
 import { generateExpiryDateOptions } from './expiry-date-options';
 
 @Component({
-  selector: 'app-status-message-form',
-  templateUrl: './status-message-form.component.html',
-  styleUrls: ['./status-message-form.component.scss'],
+    selector: 'app-status-message-form',
+    templateUrl: './status-message-form.component.html',
+    styleUrls: ['./status-message-form.component.scss'],
+    standalone: false
 })
 export class StatusMessageFormComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();

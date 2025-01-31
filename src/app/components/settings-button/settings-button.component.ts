@@ -12,9 +12,10 @@ interface UpdateIntervalOption {
 }
 
 @Component({
-  selector: 'app-settings-button',
-  templateUrl: './settings-button.component.html',
-  styleUrls: ['./settings-button.component.scss'],
+    selector: 'app-settings-button',
+    templateUrl: './settings-button.component.html',
+    styleUrls: ['./settings-button.component.scss'],
+    standalone: false
 })
 export class SettingsButtonComponent implements OnInit {
   updateIntervalOptions$?: Observable<Array<UpdateIntervalOption>>;

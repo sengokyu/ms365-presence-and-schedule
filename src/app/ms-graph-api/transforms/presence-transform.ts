@@ -1,15 +1,15 @@
-import { ExtendedPresence, PresenceEntity } from '../entities/presence.entity';
-import { StatusMessageTransform } from './status-message-transform';
+import { Presence } from '@microsoft/microsoft-graph-types-beta';
+import { PresenceEntity } from '../entities/presence.entity';
+import { presence2statusMessageEntity } from './status-message-transform';
 
-export class PresenceTransform {
-  public static presence2entity(
-    src: ExtendedPresence | null
-  ): PresenceEntity | null {
-    return src === null
-      ? null
-      : {
-          ...src,
-          statusMessage: StatusMessageTransform.presence2statusMessage(src),
-        };
-  }
-}
+export const presence2presenceEntity = (
+  src: Presence | null,
+): PresenceEntity | null =>
+  src
+    ? {
+        activity: src.activity,
+        availability: src.availability,
+        outOfOfficeSettings: src.outOfOfficeSettings,
+        statusMessage: presence2statusMessageEntity(src),
+      }
+    : null;

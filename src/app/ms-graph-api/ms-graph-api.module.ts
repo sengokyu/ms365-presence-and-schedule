@@ -5,7 +5,7 @@ import { UserService } from './services/user.service';
 import { UsersService } from './services/users.service';
 
 @NgModule({
-  imports: [ODataModule.forRoot(...msGraphApiConfig)],
+  imports: [ODataModule.forRoot({ config: msGraphApiConfig })],
   exports: [ODataModule],
   providers: [UserService, UsersService],
 })

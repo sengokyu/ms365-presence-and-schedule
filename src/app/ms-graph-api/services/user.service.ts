@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
+import { Presence } from '@microsoft/microsoft-graph-types-beta';
 import { ODataClient } from 'angular-odata';
-import { ScheduleInformation, ScheduleItem } from 'microsoft-graph';
+import { ScheduleInformation } from 'microsoft-graph';
 import { map, Observable } from 'rxjs';
 import { newDateTime } from '../../utils/date-utils';
-import { ExtendedPresence, PresenceEntity } from '../entities/presence.entity';
+import { PresenceEntity } from '../entities/presence.entity';
 import { ScheduleItemEntity } from '../entities/schedule-item.entity';
 import { StatusMessageEntity } from '../entities/status-message.entity';
 import { PREFERRED_TIME_ZONE } from '../ms-graph-api.config';
-import { PresenceTransform } from '../transforms/presence-transform';
+import { presence2presenceEntity } from '../transforms/presence-transform';
+import { scheduleItem2ScheduleItemEntity } from '../transforms/schedule-item-transform';
+import { statusMessageEntity2PresenceStatusMessage } from '../transforms/status-message-transform';
 
 @Injectable()
 export class UserService {
@@ -18,14 +21,14 @@ export class UserService {
     const path = `me/presence`;
 
     return this.client
-      .singleton<ExtendedPresence>(path, 'beta')
+      .singleton<Presence>(path, 'beta')
       .fetchEntity()
-      .pipe(map(PresenceTransform.presence2entity));
+      .pipe(map(presence2presenceEntity));
   }
 
   public setStatusMessage(statusMessage: StatusMessageEntity): Observable<any> {
     const path = 'me/presence/setStatusMessage';
-    const body = this.transformStatusMessage(statusMessage);
+    const body = statusMessageEntity2PresenceStatusMessage(statusMessage);
 
     return this.client.action(path, 'beta').call(body);
   }
@@ -33,7 +36,7 @@ export class UserService {
   // スケジュールを取得
   public getScheduleItems(
     mail: string,
-    startDate: Date
+    startDate: Date,
   ): Observable<ScheduleItemEntity[] | null | undefined> {
     const path = 'me/calendar/getSchedule';
     const param = this.createScheduleInfoParam(mail, startDate);
@@ -47,25 +50,10 @@ export class UserService {
         })
         .pipe(
           map((x) =>
-            x ? x[0].scheduleItems?.map(this.transformScheduleItem) : null
-          )
+            x ? x[0].scheduleItems?.map(scheduleItem2ScheduleItemEntity) : null,
+          ),
         )
     );
-  }
-
-  private transformStatusMessage(src: StatusMessageEntity): any {
-    const content =
-      src.message + (src.pinned ? '<pinnednote></pinnednote>' : '');
-    const expiryDateTime = src.expiryDate
-      ? { dateTime: src.expiryDate.toISOString(), timeZone: 'UTC' }
-      : null;
-
-    return {
-      statusMessage: {
-        message: { content, contentType: 'text' },
-        expiryDateTime,
-      },
-    };
   }
 
   private createScheduleInfoParam(mail: string, startDate: Date): any {
@@ -79,16 +67,6 @@ export class UserService {
         dateTime: newDateTime(startDate, 23, 59, 59).toISOString(),
         timeZone: 'UTC',
       },
-    };
-  }
-
-  private transformScheduleItem(src: ScheduleItem): ScheduleItemEntity {
-    return {
-      ...src,
-      startDateTime: src.start?.dateTime
-        ? new Date(src.start?.dateTime)
-        : undefined,
-      endDateTime: src.end?.dateTime ? new Date(src.end?.dateTime) : undefined,
     };
   }
 }

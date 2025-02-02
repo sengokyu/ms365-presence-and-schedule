@@ -28,7 +28,7 @@ export class CurrentUserStatusMessageService {
       take(1),
       tap(() => {
         this.load();
-      })
+      }),
     );
   }
 }

@@ -47,7 +47,7 @@ export class SettingsButtonComponent implements OnInit {
   }
 
   setUpdateInterval(value: UpdateIntervalType): void {
-    this.settingsService.updateInterval = value;
+    this.settingsService.saveUpdateInterval(value);
   }
 
   logout(): void {

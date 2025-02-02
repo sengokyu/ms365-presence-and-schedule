@@ -7,6 +7,7 @@ import {
   UserEntity,
   UserService,
 } from '../../ms-graph-api';
+import { AsyncPipe, DatePipe } from '@angular/common';
 
 // 1時間の表示幅（マージン込み）
 const WIDTH_OF_HOUR = 32;
@@ -16,12 +17,17 @@ const HEIGHT_OF_ITEM = 28;
 const MARGIN_OF_ITEMS = 32;
 
 @Component({
-    selector: 'app-schedule',
-    templateUrl: './schedule.component.html',
-    styleUrls: ['./schedule.component.scss'],
-    standalone: false
+  selector: 'app-schedule',
+  imports: [AsyncPipe, DatePipe],
+  templateUrl: './schedule.component.html',
+  styleUrls: ['./schedule.component.scss'],
 })
 export class ScheduleComponent implements OnInit {
+  readonly hours = [
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+    21, 22, 23,
+  ];
+
   @Input()
   user!: UserEntity;
 
@@ -39,7 +45,7 @@ export class ScheduleComponent implements OnInit {
         retry({
           delay: (_, count) => timer(count * 1000),
           resetOnSuccess: true,
-        })
+        }),
       );
   }
 
@@ -63,7 +69,7 @@ export class ScheduleComponent implements OnInit {
       Math.min(
         (scheduleItem.endDateTime!.getTime() - this.targetDate.getTime()) /
           A_HOUR_IN_MM,
-        24
+        24,
       ) - this.calcStartPos(scheduleItem);
 
     return `${endPos * WIDTH_OF_HOUR}px`;
@@ -73,7 +79,7 @@ export class ScheduleComponent implements OnInit {
     return Math.max(
       0,
       (scheduleItem.startDateTime!.getTime() - this.targetDate.getTime()) /
-        A_HOUR_IN_MM
+        A_HOUR_IN_MM,
     );
   }
 }

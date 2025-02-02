@@ -1,17 +1,25 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { filter, Subscription } from 'rxjs';
 import { CurrentUserStatusMessageService } from 'src/app/services/current-user-status-message.service';
 import { StatusMessageEntity } from '../../ms-graph-api';
 import { DateService } from '../../services/date.service';
 import { generateExpiryDateOptions } from './expiry-date-options';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
-    selector: 'app-status-message-form',
-    templateUrl: './status-message-form.component.html',
-    styleUrls: ['./status-message-form.component.scss'],
-    standalone: false
+  selector: 'app-status-message-form',
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+  ],
+  templateUrl: './status-message-form.component.html',
+  styleUrls: ['./status-message-form.component.scss'],
 })
 export class StatusMessageFormComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();
@@ -30,7 +38,7 @@ export class StatusMessageFormComponent implements OnInit, OnDestroy {
   constructor(
     private bottomSheetRef: MatBottomSheetRef<StatusMessageFormComponent>,
     private currentUserStatusMessageService: CurrentUserStatusMessageService,
-    private dateService: DateService
+    private dateService: DateService,
   ) {}
 
   ngOnInit(): void {
@@ -43,7 +51,7 @@ export class StatusMessageFormComponent implements OnInit, OnDestroy {
             pinned: x?.pinned ?? false,
             expiryDate: x?.expiryDate ?? null,
           });
-        })
+        }),
     );
   }
 

@@ -1,17 +1,31 @@
-<ng-container *ngIf="followings$ | async as followings">
-  <div *ngIf="followings.length === 0" class="centering">
-    <p>フォロー中のメンバーはありません。</p>
-    <button mat-raised-button color="primary" routerLink="/user-list">フォローするメンバーを追加する</button>
-  </div>
+@if (followings$ | async; as followings) {
+  @if (followings.length === 0) {
+    <div class="centering">
+      <p>フォロー中のメンバーはありません。</p>
+      <button mat-raised-button color="primary" routerLink="/user-list">
+        フォローするメンバーを追加する
+      </button>
+    </div>
+  }
 
   <!-- D&D organizing -->
   <div class="following-list" cdkDropList (cdkDropListDropped)="drop($event)">
-    <app-presence *ngFor="let following of followings" [user]="following" [targetDate]="targetDate"
-      [editMode]="editMode" (remove)="remove(following)" cdkDrag [cdkDragDisabled]="!editMode"
-      class="following-list-item"></app-presence>
+    @for (following of followings; track $index) {
+      <app-presence
+        [user]="following"
+        [targetDate]="targetDate"
+        [editMode]="editMode"
+        (remove)="remove(following)"
+        cdkDrag
+        [cdkDragDisabled]="!editMode"
+        class="following-list-item"
+      ></app-presence>
+    }
   </div>
 
-  <div *ngIf="followings.length !== 0 && editMode" class="centering">
-    <button mat-raised-button color="primary" routerLink="/user-list">フォローするメンバーを追加する</button>
-  </div>
-</ng-container>
+  @if (followings.length !== 0 && editMode) {
+    <button mat-raised-button color="primary" routerLink="/user-list">
+      フォローするメンバーを追加する
+    </button>
+  }
+}

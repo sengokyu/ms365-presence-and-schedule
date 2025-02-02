@@ -1,14 +1,16 @@
 <mat-toolbar (click)="onEdit()">
-  <ng-container *ngIf="statusMessage$ | async as statusMessage; loading">
-    <ng-container [ngSwitch]="!!statusMessage.message">
-      <span *ngSwitchCase="true">{{statusMessage.message}}</span>
-      <span *ngSwitchDefault style="color:gray">（ステータスメッセージ未入力）</span>
-    </ng-container>
+  @if (statusMessage$ | async; as statusMessage) {
+    @switch (!!statusMessage.message) {
+      @case (true) {
+        <span>{{ statusMessage.message }}</span>
+      }
+      @default {
+        <span style="color: gray">（ステータスメッセージ未入力）</span>
+      }
+    }
     <span class="flex-fill"></span>
     <button mat-icon-button><mat-icon>edit</mat-icon></button>
-  </ng-container>
+  } @else {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  }
 </mat-toolbar>
-
-<ng-template #loading>
-  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-</ng-template>

@@ -1,14 +1,23 @@
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
+import { AsyncPipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { UserEntity } from '../../ms-graph-api';
 import { DateService } from '../../services/date.service';
 import { FollowingService } from '../../services/following.service';
+import { PresenceComponent } from '../presence/presence.component';
 
 @Component({
-    selector: 'app-following-list',
-    templateUrl: './following-list.component.html',
-    styleUrls: ['./following-list.component.scss'],
-    standalone: false
+  selector: 'app-following-list',
+  imports: [
+    AsyncPipe,
+    CdkDrag,
+    CdkDropList,
+    MatButtonModule,
+    PresenceComponent,
+  ],
+  templateUrl: './following-list.component.html',
+  styleUrls: ['./following-list.component.scss'],
 })
 export class FollowingListComponent {
   @Input()
@@ -20,7 +29,7 @@ export class FollowingListComponent {
 
   constructor(
     private followingService: FollowingService,
-    private dateService: DateService
+    private dateService: DateService,
   ) {}
 
   remove(user: UserEntity): void {

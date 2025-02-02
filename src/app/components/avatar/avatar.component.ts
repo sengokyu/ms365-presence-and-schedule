@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { map, Observable } from 'rxjs';
@@ -5,10 +6,10 @@ import { text2Color } from 'src/app/utils/text2color';
 import { UserEntity, UsersService } from '../../ms-graph-api';
 
 @Component({
-    selector: 'app-avatar',
-    templateUrl: './avatar.component.html',
-    styleUrls: ['./avatar.component.scss'],
-    standalone: false
+  selector: 'app-avatar',
+  imports: [AsyncPipe],
+  templateUrl: './avatar.component.html',
+  styleUrls: ['./avatar.component.scss'],
 })
 export class AvatarComponent implements OnInit {
   @Input()
@@ -19,7 +20,7 @@ export class AvatarComponent implements OnInit {
 
   constructor(
     private usersService: UsersService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
   ) {}
 
   get displayName(): string {
@@ -45,7 +46,7 @@ export class AvatarComponent implements OnInit {
           safeUrl: this.sanitizer.bypassSecurityTrustUrl(objectUrl),
           objectUrl,
         };
-      })
+      }),
     );
   }
 

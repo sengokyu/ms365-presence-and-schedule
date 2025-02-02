@@ -5,12 +5,20 @@
       <span>&nbsp;&nbsp;</span>
       <span>行き先掲示板</span>
       <span class="flex-fill"></span>
-      <ng-container *ngIf="!editMode;else inEditMode">
-        <button mat-icon-button (click)="editMode=true" matTooltip="フォローするメンバーリストを編集">
+      @if (!editMode) {
+        <button
+          mat-icon-button
+          (click)="editMode = true"
+          matTooltip="フォローするメンバーリストを編集"
+        >
           <mat-icon svgIcon="people_delete_add"></mat-icon>
         </button>
         <app-settings-button></app-settings-button>
-      </ng-container>
+      } @else {
+        <button mat-button (click)="editMode = false">
+          <mat-icon>done</mat-icon>Done
+        </button>
+      }
     </mat-toolbar-row>
   </mat-toolbar>
 
@@ -18,7 +26,3 @@
 
   <app-status-message-bar></app-status-message-bar>
 </div>
-
-<ng-template #inEditMode>
-  <button mat-button (click)="editMode=false"><mat-icon>done</mat-icon>Done</button>
-</ng-template>

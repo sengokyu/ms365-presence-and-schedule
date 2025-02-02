@@ -1,33 +1,50 @@
-<mat-card *ngIf="presence$ | async as presence; else loading">
-  <mat-card-content class="card-content">
-    <app-avatar [user]="user" class="avatar"></app-avatar>
-    <div class="name">
-      <div>{{user.displayName}}</div>
-      <app-availability [presence]="presence"></app-availability>
-    </div>
-    <div class="status-message">{{presence.statusMessage?.message ?? ''}}</div>
-    <app-schedule [user]="user" [targetDate]="targetDate" class="schedule"></app-schedule>
-  </mat-card-content>
+@if (presence$ | async; as presence) {
+  <mat-card>
+    <mat-card-content class="card-content">
+      <app-avatar [user]="user" class="avatar"></app-avatar>
+      <div class="name">
+        <div>{{ user.displayName }}</div>
+        <app-availability [presence]="presence"></app-availability>
+      </div>
+      <div class="status-message">
+        {{ presence.statusMessage?.message ?? "" }}
+      </div>
+      <app-schedule
+        [user]="user"
+        [targetDate]="targetDate"
+        class="schedule"
+      ></app-schedule>
+    </mat-card-content>
 
-  <!-- overlay-mask -->
-  <div class="edit-mode-overlay" [style.display]="editMode ? 'block':'none'">
-    <div>
-      <div class="drag-handle"><mat-icon>drag_handle</mat-icon></div>
-      <button *ngIf="editMode" (click)="remove.emit()" mat-icon-button color="warn"
-        class="clear-button"><mat-icon>clear</mat-icon></button>
+    <!-- overlay-mask -->
+    <div
+      class="edit-mode-overlay"
+      [style.display]="editMode ? 'block' : 'none'"
+    >
+      <div>
+        <div class="drag-handle"><mat-icon>drag_handle</mat-icon></div>
+        @if (editMode) {
+          <button
+            (click)="remove.emit()"
+            mat-icon-button
+            color="warn"
+            class="clear-button"
+          >
+            <mat-icon>clear</mat-icon>
+          </button>
+        }
+      </div>
     </div>
-  </div>
-</mat-card>
-
-<ng-template #loading>
+  </mat-card>
+} @else {
   <mat-card>
     <mat-card-header>
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </mat-card-header>
     <mat-card-content>
       <div class="name">
-        <div>{{user.displayName}}</div>
+        <div>{{ user.displayName }}</div>
       </div>
     </mat-card-content>
   </mat-card>
-</ng-template>
+}

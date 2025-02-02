@@ -1,3 +1,5 @@
-<div *ngIf="presence?.availability" class="with-icon {{presence?.availability}}">
-  {{presence?.availability}}
-</div>
+@if (presence?.availability) {
+  <div class="with-icon {{ presence?.availability }}">
+    {{ presence?.availability }}
+  </div>
+}

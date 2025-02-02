@@ -1,14 +1,15 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { RouterModule } from '@angular/router';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { map, Observable } from 'rxjs';
 import {
   SettingsService,
   UpdateIntervalType,
 } from '../../services/settings.service';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
-import { AsyncPipe } from '@angular/common';
 
 interface UpdateIntervalOption {
   value: UpdateIntervalType;
@@ -17,7 +18,13 @@ interface UpdateIntervalOption {
 
 @Component({
   selector: 'app-settings-button',
-  imports: [AsyncPipe, MatButtonModule, MatIconModule, MatMenuModule],
+  imports: [
+    AsyncPipe,
+    RouterModule,
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule,
+  ],
   templateUrl: './settings-button.component.html',
   styleUrls: ['./settings-button.component.scss'],
 })

@@ -1,19 +1,23 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { filter, Subscription } from 'rxjs';
 import { CurrentUserStatusMessageService } from 'src/app/services/current-user-status-message.service';
 import { StatusMessageEntity } from '../../ms-graph-api';
 import { DateService } from '../../services/date.service';
 import { generateExpiryDateOptions } from './expiry-date-options';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-status-message-form',
   imports: [
     ReactiveFormsModule,
+    MatButtonModule,
+    MatCheckboxModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,

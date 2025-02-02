@@ -3,8 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "dotenv ng serve",
-    "build": "dotenv ng build",
+    "prebuild": "dotenv env2js tmp/env.js TENANT_ID CLIENT_ID STORAGE_API_URL FUNCTION_CODE",
+    "prestart": "npm run prebuild",
+    "start": "ng serve",
+    "build": "ng build",
     "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
@@ -42,7 +44,7 @@
     "karma-coverage": "^2.2.1",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "^2.1.0",
-    "ng-build-helper-env2js": "^1.0.0",
+    "ng-build-helper-env2js": "^1.1.0",
     "prettier": "^3.4.2",
     "typescript": "~5.5.4"
   }

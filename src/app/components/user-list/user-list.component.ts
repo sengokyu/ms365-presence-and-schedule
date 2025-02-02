@@ -14,6 +14,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { RouterModule } from '@angular/router';
 import { debounceTime, Subscription } from 'rxjs';
 import { UsersService } from '../../ms-graph-api';
 import { UserEntity } from '../../ms-graph-api/entities/user.entity';
@@ -25,6 +26,7 @@ import { FollowingService } from '../../services/following.service';
   styleUrls: ['./user-list.component.scss'],
   imports: [
     ReactiveFormsModule,
+    RouterModule,
     MatButtonModule,
     MatFormFieldModule,
     MatIconModule,

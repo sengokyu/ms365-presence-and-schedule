@@ -2,6 +2,7 @@ import { CdkDrag, CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { AsyncPipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { RouterModule } from '@angular/router';
 import { UserEntity } from '../../ms-graph-api';
 import { DateService } from '../../services/date.service';
 import { FollowingService } from '../../services/following.service';
@@ -11,6 +12,7 @@ import { PresenceComponent } from '../presence/presence.component';
   selector: 'app-following-list',
   imports: [
     AsyncPipe,
+    RouterModule,
     CdkDrag,
     CdkDropList,
     MatButtonModule,

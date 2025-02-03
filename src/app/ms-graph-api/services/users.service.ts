@@ -15,6 +15,7 @@ const SELECT_FIELDS = [
   'department',
   'mail',
   'userPrincipalName',
+  'userType',
 ]; // 取得項目
 
 const transform = (src: User): UserEntity => ({
@@ -34,12 +35,20 @@ export class UsersService extends ODataEntitySetService<User> {
   public getUsers(): Observable<Array<UserEntity>> {
     const headers = new HttpHeaders({ ConsistencyLevel: 'eventual' });
 
-    return this.entities()
-      .query((q) => q.filter("userType ne 'Guest'"))
-      .query((q) => q.select(SELECT_FIELDS))
-      .query((q) => q.orderBy('displayName'))
-      .fetchAll({ headers, withCount: true })
-      .pipe(map(({ entities }) => entities.map(transform)));
+    return (
+      this.entities()
+        // .query((q) => q.filter("userType ne 'Guest'")) // カウント付きじゃないと400 Bad Request
+        .query((q) => q.select(SELECT_FIELDS))
+        .query((q) => q.orderBy('displayName'))
+        .fetchAll({ headers })
+        .pipe(
+          map(({ entities }) =>
+            entities
+              .filter((entity) => entity.userType != 'Guest')
+              .map(transform),
+          ),
+        )
+    );
   }
 
   // プロファイル写真を取得

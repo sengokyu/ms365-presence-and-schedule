@@ -21,12 +21,12 @@ const apiOptions = { params: { code: FUNCTION_CODE } };
 })
 export class SettingsService {
   private readonly _settings = new BehaviorSubject<SettingsEntity>(
-    defaultSettings
+    defaultSettings,
   );
 
   public readonly settings$ = this._settings.asObservable();
 
-  public set updateInterval(value: UpdateIntervalType) {
+  public saveUpdateInterval(value: UpdateIntervalType) {
     const body = this._settings.value;
     body.updateInterval = value;
     this.save(body);
@@ -42,7 +42,7 @@ export class SettingsService {
       .pipe(
         first(),
         retry(2),
-        catchError(() => of(defaultSettings))
+        catchError(() => of(defaultSettings)),
       )
       .subscribe((x) => {
         this._settings.next(x);

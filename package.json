@@ -37,7 +37,7 @@
     "@ngneat/spectator": "^19.4.1",
     "@types/jasmine": "^5.1.4",
     "@types/microsoft-graph": "^2.40.0",
-    "dotenv": "^16.3.1",
+    "dotenv-cli": "^8.0.0",
     "jasmine-core": "^5.1.1",
     "karma": "^6.4.2",
     "karma-chrome-launcher": "^3.2.0",

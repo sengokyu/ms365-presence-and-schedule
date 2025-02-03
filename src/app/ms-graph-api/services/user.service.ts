@@ -10,7 +10,7 @@ import { StatusMessageEntity } from '../entities/status-message.entity';
 import { PREFERRED_TIME_ZONE } from '../ms-graph-api.config';
 import { presence2presenceEntity } from '../transforms/presence-transform';
 import { scheduleItem2ScheduleItemEntity } from '../transforms/schedule-item-transform';
-import { statusMessageEntity2PresenceStatusMessage } from '../transforms/status-message-transform';
+import { statusMessageEntity2Presence } from '../transforms/status-message-transform';
 
 @Injectable()
 export class UserService {
@@ -28,7 +28,7 @@ export class UserService {
 
   public setStatusMessage(statusMessage: StatusMessageEntity): Observable<any> {
     const path = 'me/presence/setStatusMessage';
-    const body = statusMessageEntity2PresenceStatusMessage(statusMessage);
+    const body = statusMessageEntity2Presence(statusMessage);
 
     return this.client.action(path, 'beta').call(body);
   }

@@ -1,7 +1,4 @@
-import {
-  Presence,
-  PresenceStatusMessage,
-} from '@microsoft/microsoft-graph-types-beta';
+import { Presence } from '@microsoft/microsoft-graph-types-beta';
 import { StatusMessageEntity } from '../entities/status-message.entity';
 
 export const presence2statusMessageEntity = (
@@ -21,16 +18,18 @@ export const presence2statusMessageEntity = (
   return { publishedDateTime, message, pinned, expiryDate };
 };
 
-export const statusMessageEntity2PresenceStatusMessage = (
+export const statusMessageEntity2Presence = (
   src: StatusMessageEntity,
-): PresenceStatusMessage => {
+): Presence => {
   const content = src.message + (src.pinned ? '<pinnednote></pinnednote>' : '');
   const expiryDateTime = src.expiryDate
     ? { dateTime: src.expiryDate.toISOString(), timeZone: 'UTC' }
     : null;
 
   return {
-    message: { content, contentType: 'text' },
-    expiryDateTime,
+    statusMessage: {
+      message: { content, contentType: 'text' },
+      expiryDateTime,
+    },
   };
 };
